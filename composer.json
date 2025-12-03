@@ -1,0 +1,22 @@
+{
+  "name": "payplug/payplug-plugin-core",
+  "description": "Module core pour l'intégration Payplug.",
+  "type": "library",
+  "version": "0.1.0",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Payplug",
+      "email": "support@payplug.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "payplug/payplug-php": "^4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Payplug\\PluginCore\\": "src/"
+    }
+  }
+}
