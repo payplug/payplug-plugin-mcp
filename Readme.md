@@ -19,8 +19,10 @@ Module core for Payplug integration. Enables management of payments, merchants, 
 > _composer website: https://getcomposer.org/download/
 
 #### Option 2 - clone the repository:
-    
+
 > git clone https://github.com/payplug/payplug-plugin-core.git
+
+#### Docker ?
 
 ## Features
 - Major features:
@@ -31,20 +33,22 @@ Module core for Payplug integration. Enables management of payments, merchants, 
 
 - Minor features:
     - Error and log management
+    - Concurrence handler (queuing system, text file, ?)
     - Validation of received data
-    - Module configuration (API key, merchant parameters)
     - Multilingual support (messages, notifications)
     - HTTP response management (statuses, messages)
     - Basic user interface management (confirmation/error messages)
+    - Requirements validation
 
 ## Structure of the module
     src  
     ├── actions: All actions related to a workflow  
+    ├── gateways: All gateway  
     ├── utilities  
     │   ├── helpers: Reusable static methods, generic, non-business  
     │   ├── validators: Data validation (validator)  
-    │   └── traits: Reusable methods for one or more classes/interfaces  
-    ├── services: Ready-to-use object (single task)  
+    │   ├── traits: Reusable methods for one or more classes/interfaces  
+    │   └── services: Ready-to-use object (single task)  
     ├── models  
     │   ├── repositories: Communication with the database
     │   ├── entities: Definition of an object and its attributes (getter/setter)  
@@ -54,13 +58,15 @@ Module core for Payplug integration. Enables management of payments, merchants, 
     │       └── Final classes: Final classes not extendable (ipn, lock)  
     └── interfaces: Definition of methods specific to a class
 
-## Endpoint métiers du module Payplug
+## Endpoint payplug plugin
+
 - Merchant experience and actions:
     - user login
     - user logout
-    - get user permissions
+    - get user/merchant permissions
     - validate module requirements
     - configure payment features
+    - create payment resource
     - abort payment resource
     - capture payment resource
     - refund payment resource
@@ -84,8 +90,14 @@ Module core for Payplug integration. Enables management of payments, merchants, 
     - display payment options
     - display admin order content
     - display admin plugin configuration
+    - display payplug payment listing ?
 
 - Webhook (notifications):
     - handle payment notification use to create/update order
     - handle refund notification
-  
+    - handle merchand offer upgrade
+    - handle merchand revocation
+
+
+## Next step Dev :
+- [ ] Develop endpoint to create a payment link
