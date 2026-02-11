@@ -28,12 +28,13 @@ class StandardPaymentGateway extends AbstractPaymentGateway
     {
         $attributes = $this->getDefaultAttributeFromDTO($payment_inputDTO);
         if (empty($attributes)) {
-            throw new \Exception('Can\'t generate default Payment attributes');
+            throw new \Exception('Can\'t generate default payment attributes');
         }
 
         // todo : Set validator to check this point
         // Vérification des clés attendues dans $context
         $context = $payment_inputDTO->getContext() ?? [];
+
         foreach ($this->expected_context as $key) {
             if (!\array_key_exists($key, $context)) {
                 //@TODO: Create Exception System for the Library to avoid trigerring basic Exception all the time
@@ -55,7 +56,7 @@ class StandardPaymentGateway extends AbstractPaymentGateway
 
         // Update Payment card could be saved
         $is_guest = isset($context['is_guest']) && $context['is_guest'];
-        $attributes['allow_save_card'] = !(bool)$is_guest;
+        $attributes['allow_save_card'] = !(bool) $is_guest;
 
         return $attributes;
     }
