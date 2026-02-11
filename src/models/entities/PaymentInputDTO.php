@@ -87,6 +87,7 @@ class PaymentInputDTO
     }
 
     // Getters
+
     /**
      * @return int
      */
@@ -154,12 +155,13 @@ class PaymentInputDTO
     /**
      * @return array[]
      */
-    public function getDefinitions(): ?array
+    public function getDefinitions(): array
     {
         return $this->definitions;
     }
 
     // Setters
+
     /**
      * @param int $amount
      * @return void

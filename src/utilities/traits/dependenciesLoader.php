@@ -15,9 +15,9 @@ trait dependenciesLoader
      * @return mixed
      * @throws \Exception
      */
-    public function get_service($name = '')
+    public function get_service(string $name = ''): object
     {
-        if(!is_string($name) || empty($name)) {
+        if (empty($name)) {
             throw new \Exception('Invalid parameter, $name given should be a non empty string.');
         }
 
@@ -38,8 +38,9 @@ trait dependenciesLoader
      * @return mixed
      * @throws \Exception
      */
-    public function get_gateway($name = ''){
-        if(!is_string($name) || empty($name)) {
+    public function get_gateway(string $name = ''): object
+    {
+        if (empty($name)) {
             throw new \Exception('Invalid parameter, $name given should be a non empty string.');
         }
 
