@@ -15,10 +15,12 @@ class PaymentAction
 
     /**
      * @param PaymentInputDTO $payment_inputDTO
-     * @return PaymentOutputDTO
+     *
      * @throws \Exception
+     *
+     * @return ?PaymentOutputDTO
      */
-    public function createAction(PaymentInputDTO $payment_inputDTO): PaymentOutputDTO
+    public function createAction(PaymentInputDTO $payment_inputDTO): ?PaymentOutputDTO
     {
         // todo: add a validator to check if the given paymentDTO is usable
 
@@ -39,12 +41,8 @@ class PaymentAction
         $api_service = $this->get_service('api');
         $api = $api_service->load((string) $payment_inputDTO->getApiBearer());
         $resource = $api->createPaymentResource($formated_attributes);
-        $output = PaymentOutputDTO::create($resource);
-        if ($output === null) {
-            throw new \Exception('Failed to build PaymentOutputDTO from API response.');
-        }
 
-        return $output;
+        return PaymentOutputDTO::create($resource);
     }
 
     /**

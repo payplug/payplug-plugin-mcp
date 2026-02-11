@@ -101,3 +101,17 @@ Module core for Payplug integration. Enables management of payments, merchants, 
 
 ## Next step Dev :
 - [ ] Develop endpoint to create a payment link
+
+
+## Quick start:
+
+```bash
+composer install        # Hooks are installed automatically
+composer cs:fix         # Manual code formatting
+composer hooks:install  # Reinstall hooks if needed
+composer hooks:install  # Reinstall hooks if needed
+
+composer phpunit:unit   # Run only unitary phpUnit tests  
+composer phpunit:inte   # Run only integration phpUnit tests  
+composer phpunit:all    # Run all phpUnit tests
+```

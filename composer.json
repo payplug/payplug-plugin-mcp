@@ -36,8 +36,8 @@
     "post-update-cmd": "vendor/bin/captainhook install --force --skip-existing",
     "test": "vendor/bin/phpunit",
     "stan": "vendor/bin/phpstan analyse --configuration=phpstan.neon",
-    "lint": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff",
-    "fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
+    "cs-lint": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff",
+    "cs-fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
     "rector": "vendor/bin/rector process",
     "rector-dry": "vendor/bin/rector process --dry-run",
     "release": [

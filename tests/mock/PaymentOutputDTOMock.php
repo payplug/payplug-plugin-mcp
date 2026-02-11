@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace PayplugPluginCore\tests\mock;
 
 use Payplug\Resource\Payment;
+use PayplugPluginCore\Models\Entities\PaymentOutputDTO;
 
 class PaymentOutputDTOMock
 {
-    /** @var boolean */
+    /** @var bool */
     public $result;
     /** @var string */
     public $code;
@@ -17,17 +18,12 @@ class PaymentOutputDTOMock
     /** @var object */
     public $resource;
 
-    public static function get()
+    public static function get(?array $custom_props)
     {
-        $paymentOutputDTO = new \stdClass();
-
-        $paymentOutputDTO->result = true;
-        $paymentOutputDTO->code = 200;
-        $paymentOutputDTO->message = '';
-
+        // get default
         $payment_attributes = [
             'id' => 'pay_id',
-            'object' => 'Payment',
+            'object' => 'payment',
             'is_live' => true,
             'amount' => 4200,
             'amount_refunded' => 0,
@@ -94,8 +90,20 @@ class PaymentOutputDTOMock
                 'delivery_type' => 'BILLING',
             ],
         ];
-        $paymentOutputDTO->resource = Payment::fromAttributes($payment_attributes);
+        $props = [
+            'result' => true,
+            'code' => 200,
+            'message' => 'OK',
+            'resource' => Payment::fromAttributes($payment_attributes),
+        ];
 
-        return $paymentOutputDTO;
+        // set custom props
+        foreach ($custom_props as $prop => $value) {
+            $props[$prop] = $value;
+        }
+
+        //
+        $paymentOutputDTO = new PaymentOutputDTO();
+        return $paymentOutputDTO->hydrate($props);
     }
 }
