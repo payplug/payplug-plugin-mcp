@@ -1,11 +1,10 @@
 <?php
 
-
 namespace PayplugPluginCore\Models\Entities;
 
 class PaymentOutputDTO
 {
-    /** @var boolean */
+    /** @var bool */
     public $result;
     /** @var string */
     public $code;
@@ -26,6 +25,7 @@ class PaymentOutputDTO
 
     /**
      * @param array $props
+     *
      * @return $this|self|null
      */
     public function hydrate(array $props): ?self
@@ -36,28 +36,19 @@ class PaymentOutputDTO
                 continue;
             }
 
-            if (!array_key_exists($key, $props) || $props[$key] === null) {
+            if (!array_key_exists($key, $props) || null === $props[$key]) {
                 $this->resetProperties();
+
                 throw new \Exception('PaymentOutputDTO can\'t be hydrated, required field is invalid.');
             }
         }
 
-        $this->setResult((bool)$props['result']);
-        $this->setCode((string)$props['code']);
-        $this->setMessage((string)$props['message']);
-        $this->setResource($props['resource']);
-        return $this;
-    }
+        $this->setResult((bool) $props['result']);
+        $this->setCode((string) $props['code']);
+        $this->setMessage(isset($props['message']) ? (string) $props['message'] : '');
+        $this->setResource($props['response']);
 
-    /**
-     * @return void
-     */
-    private function resetProperties(): void
-    {
-        $this->result = null;
-        $this->code = null;
-        $this->message = null;
-        $this->resource = null;
+        return $this;
     }
 
     // Getters
@@ -106,6 +97,7 @@ class PaymentOutputDTO
 
     /**
      * @param bool $result
+     *
      * @return void
      */
     public function setResult(bool $result): void
@@ -115,6 +107,7 @@ class PaymentOutputDTO
 
     /**
      * @param string $code
+     *
      * @return void
      */
     public function setCode(string $code): void
@@ -124,6 +117,7 @@ class PaymentOutputDTO
 
     /**
      * @param string $message
+     *
      * @return void
      */
     public function setMessage(string $message): void
@@ -133,6 +127,7 @@ class PaymentOutputDTO
 
     /**
      * @param $resource
+     *
      * @return void
      */
     public function setResource($resource): void
@@ -142,11 +137,23 @@ class PaymentOutputDTO
 
     /**
      * @param array $props
+     *
      * @return self|null
      */
     public static function create(array $props): ?self
     {
         $instance = new self();
         return $instance->hydrate($props);
+    }
+
+    /**
+     * @return void
+     */
+    private function resetProperties(): void
+    {
+        $this->result = null;
+        $this->code = null;
+        $this->message = null;
+        $this->resource = null;
     }
 }

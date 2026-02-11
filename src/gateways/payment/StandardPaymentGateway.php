@@ -19,8 +19,10 @@ class StandardPaymentGateway extends PaymentGateway
 
     /**
      * @param PaymentInputDTO $payment_inputDTO
-     * @return array
+     *
      * @throws \Exception
+     *
+     * @return array
      */
     public function formatPaymentAttributes(PaymentInputDTO $payment_inputDTO): array
     {
@@ -52,7 +54,7 @@ class StandardPaymentGateway extends PaymentGateway
 
         // Update payment card could be saved
         $is_guest = isset($context['is_guest']) && $context['is_guest'];
-        $attributes['allow_save_card'] = !(bool)$is_guest;
+        $attributes['allow_save_card'] = !(bool) $is_guest;
 
         return $attributes;
     }

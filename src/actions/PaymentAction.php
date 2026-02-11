@@ -2,9 +2,9 @@
 
 namespace PayplugPluginCore\Actions;
 
-use PayplugPluginCore\Traits\dependenciesLoader;
 use PayplugPluginCore\Models\Entities\PaymentInputDTO;
 use PayplugPluginCore\Models\Entities\PaymentOutputDTO;
+use PayplugPluginCore\Utilities\Traits\DependenciesLoader;
 
 class PaymentAction
 {
@@ -12,15 +12,13 @@ class PaymentAction
 
     /**
      * @param PaymentInputDTO $payment_inputDTO
-     * @return PaymentOutputDTO
+     *
      * @throws \Exception
+     *
+     * @return PaymentOutputDTO
      */
     public function createAction(PaymentInputDTO $payment_inputDTO): object
     {
-        if (empty($payment_inputDTO)) {
-            throw new \Exception('Invalid parameter, $payment_inputDTO given should be a non empty object.');
-        }
-
         // todo: add a validator to check if the given paymentDTO is usable
 
         // get payment method from given arg
@@ -34,8 +32,9 @@ class PaymentAction
         // load api service with given then return the fallback
         $api = $this
             ->get_service('api')
-            ->load((string)$payment_inputDTO->getApiBearer());
+            ->load((string) $payment_inputDTO->getApiBearer());
         $resource = $api->createPaymentResource($formated_attributes);
+
         return PaymentOutputDTO::create($resource);
     }
 

@@ -1,19 +1,25 @@
 <?php
 
-namespace PayplugPluginCore\Traits;
+namespace PayplugPluginCore\Utilities\Traits;
 
-trait dependenciesLoader
+trait DependenciesLoader
 {
     /** @var array */
-    private $allowed_services = [];
+    private $allowed_services = [
+        'api',
+    ];
 
     /** @var array */
-    private $allowed_gateways = [];
+    private $allowed_gateways = [
+        'payment',
+    ];
 
     /**
      * @param $name
-     * @return mixed
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function get_service(string $name = ''): object
     {
@@ -25,7 +31,7 @@ trait dependenciesLoader
             throw new \Exception('Given $name is not allower services.');
         }
 
-        $service_name = '\PayplugPluginCore\services\\' . str_replace('_', '', ucwords($name, '_'));
+        $service_name = '\PayplugPluginCore\Utilities\Services\\' . str_replace('_', '', ucwords($name, '_'));
         if (!class_exists($service_name)) {
             throw new \Exception('Service can\'t be found.');
         }
@@ -35,8 +41,10 @@ trait dependenciesLoader
 
     /**
      * @param $name
-     * @return mixed
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function get_gateway(string $name = ''): object
     {

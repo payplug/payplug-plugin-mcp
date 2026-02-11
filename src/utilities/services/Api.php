@@ -1,7 +1,8 @@
 <?php
 
-namespace PayplugPluginCore\services;
+namespace PayplugPluginCore\Utilities\Services;
 
+use Payplug\Payment;
 use Payplug\Payplug;
 
 class Api
@@ -11,16 +12,30 @@ class Api
     /** @var string */
     private $bearer_token;
 
-    /** @var string */
-    private const PAYMENT_CREATE = '\Payplug\Payment::create';
-
     /**
      * @param array $datas
+     *
      * @return array
      */
     public function createPaymentResource(array $datas): array
     {
-        return $this->doRequest(self::PAYMENT_CREATE, $datas);
+        try {
+            $response = [
+                'code' => 200,
+                'message' => 'OK',
+                'response' => Payment::create($datas, $this->initialized),
+                'result' => true,
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'response' => null,
+                'result' => false,
+            ];
+        }
+
+        return $response;
     }
 
     /**
@@ -28,11 +43,27 @@ class Api
      */
     public function getBearerToken(): string
     {
-        return (string)$this->bearer_token;
+        return (string) $this->bearer_token;
     }
 
     /**
      * @param string $bearer_token
+     *
+     * @throws \Payplug\Exception\ConfigurationException
+     *
+     * @return $this
+     */
+    public function load(string $bearer_token)
+    {
+        $this->setBearerToken((string) $bearer_token);
+        $this->initialize();
+
+        return $this;
+    }
+
+    /**
+     * @param string $bearer_token
+     *
      * @return void
      */
     private function setBearerToken(string $bearer_token): void
@@ -41,44 +72,9 @@ class Api
     }
 
     /**
-     * @param string $bearer_token
-     * @return $this
      * @throws \Payplug\Exception\ConfigurationException
-     */
-    public function load(string $bearer_token)
-    {
-        $this->setBearerToken((string)$bearer_token);
-        $this->initialize();
-        return $this;
-    }
-
-    /**
-     * @param string $callback
-     * @param array $params
-     * @return array
-     */
-    protected function doRequest(string $callback, array $params)
-    {
-        try {
-            $response = [
-                'result' => true,
-                'response' => call_user_func_array($callback, $params),
-                'code' => 200,
-            ];
-        } catch (\Exception $e) {
-            $response = [
-                'result' => false,
-                'response' => null,
-                'code' => $e->getCode(),
-            ];
-        }
-
-        return $response;
-    }
-
-    /**
+     *
      * @return void
-     * @throws \Payplug\Exception\ConfigurationException
      */
     private function initialize(): void
     {
@@ -89,6 +85,7 @@ class Api
             ]);
         } catch (\Exception $e) {
             $this->initialized = null;
+
             throw new \Exception('Payplug API can\'t be initialized. Error thrown: ' . $e->getMessage());
         }
     }

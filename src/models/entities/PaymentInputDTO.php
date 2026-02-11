@@ -44,6 +44,7 @@ class PaymentInputDTO
 
     /**
      * @param array $props
+     *
      * @return $this|self|null
      */
     public function hydrate(array $props): ?self
@@ -54,36 +55,23 @@ class PaymentInputDTO
                 continue;
             }
 
-            if (!array_key_exists($key, $props) || $props[$key] === null) {
+            if (!array_key_exists($key, $props) || null === $props[$key]) {
                 $this->resetProperties();
+
                 throw new \Exception('PaymentInputDTO can\'t be hydrated, required field is invalid.');
             }
         }
 
-        $this->setApiBearer((string)$props['api_bearer']);
-        $this->setPaymentMethod((string)$props['payment_method']);
-        $this->setAmount((int)$props['amount']);
-        $this->setCurrencyIsoCode((string)$props['currency_iso_code']);
-        $this->setCustomer((array)$props['customer']);
-        $this->setReturnUrls((array)$props['urls']);
-        $this->setMetadata((array)$props['metadata']);
-        $this->setContext((array)$props['context']);
-        return $this;
-    }
+        $this->setApiBearer((string) $props['api_bearer']);
+        $this->setPaymentMethod((string) $props['payment_method']);
+        $this->setAmount((int) $props['amount']);
+        $this->setCurrencyIsoCode((string) $props['currency_iso_code']);
+        $this->setCustomer((array) $props['customer']);
+        $this->setUrls((array) $props['urls']);
+        $this->setMetadata((array) $props['metadata']);
+        $this->setContext((array) $props['context']);
 
-    /**
-     * @return void
-     */
-    private function resetProperties(): void
-    {
-        $this->api_bearer = null;
-        $this->payment_method = null;
-        $this->amount = null;
-        $this->currency_iso_code = null;
-        $this->customer = null;
-        $this->urls = null;
-        $this->metadata = null;
-        $this->context = null;
+        return $this;
     }
 
     // Getters
@@ -147,7 +135,7 @@ class PaymentInputDTO
     /**
      * @return array
      */
-    public function getReturnUrls(): array
+    public function getUrls(): array
     {
         return $this->urls;
     }
@@ -164,6 +152,7 @@ class PaymentInputDTO
 
     /**
      * @param int $amount
+     *
      * @return void
      */
     public function setAmount(int $amount): void
@@ -173,6 +162,7 @@ class PaymentInputDTO
 
     /**
      * @param string $api_bearer
+     *
      * @return void
      */
     public function setApiBearer(string $api_bearer): void
@@ -182,6 +172,7 @@ class PaymentInputDTO
 
     /**
      * @param array $context
+     *
      * @return void
      */
     public function setContext(array $context): void
@@ -191,6 +182,7 @@ class PaymentInputDTO
 
     /**
      * @param string $currency_iso_code
+     *
      * @return void
      */
     public function setCurrencyIsoCode(string $currency_iso_code): void
@@ -200,6 +192,7 @@ class PaymentInputDTO
 
     /**
      * @param array $customer
+     *
      * @return void
      */
     public function setCustomer(array $customer): void
@@ -209,6 +202,7 @@ class PaymentInputDTO
 
     /**
      * @param array $metadata
+     *
      * @return void
      */
     public function setMetadata(array $metadata): void
@@ -218,6 +212,7 @@ class PaymentInputDTO
 
     /**
      * @param string $payment_method
+     *
      * @return void
      */
     public function setPaymentMethod(string $payment_method): void
@@ -227,20 +222,38 @@ class PaymentInputDTO
 
     /**
      * @param array $urls
+     *
      * @return void
      */
-    public function setReturnUrls(array $urls): void
+    public function setUrls(array $urls): void
     {
         $this->urls = $urls;
     }
 
     /**
      * @param array $props
+     *
      * @return self|null
      */
     public static function create(array $props): ?self
     {
         $instance = new self();
+
         return $instance->hydrate($props);
+    }
+
+    /**
+     * @return void
+     */
+    private function resetProperties(): void
+    {
+        $this->api_bearer = null;
+        $this->payment_method = null;
+        $this->amount = null;
+        $this->currency_iso_code = null;
+        $this->customer = null;
+        $this->urls = null;
+        $this->metadata = null;
+        $this->context = null;
     }
 }
