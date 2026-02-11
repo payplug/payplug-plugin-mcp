@@ -25,7 +25,7 @@ abstract class AbstractPaymentGateway
     public function getDefaultAttributeFromDTO(PaymentInputDTO $payment_inputDTO): array
     {
         $customer = $payment_inputDTO->getCustomer() ?? [];
-        $urls     = $payment_inputDTO->getReturnUrls() ?? [];
+        $urls     = $payment_inputDTO->getUrls() ?? [];
 
         return [
             'amount'           => $payment_inputDTO->getAmount(),

@@ -36,7 +36,7 @@ class PaymentOutputDTO
                 continue;
             }
 
-            if (!\array_key_exists($key, $props) || $props[$key] === null) {
+            if (!\array_key_exists($key, $props) || null === $props[$key]) {
                 $this->resetProperties();
                 throw new \Exception('PaymentOutputDTO can\'t be hydrated, required field is invalid.');
             }
@@ -44,8 +44,8 @@ class PaymentOutputDTO
 
         $this->setResult((bool) $props['result']);
         $this->setCode((string) $props['code']);
-        $this->setMessage((string) $props['message']);
-        $this->setResource($props['resource']);
+        $this->setMessage(isset($props['message']) ? (string) $props['message'] : '');
+        $this->setResource($props['response']);
 
         return $this;
     }
