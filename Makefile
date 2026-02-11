@@ -31,10 +31,10 @@ test:
 stan:
 	$(PHP) vendor/bin/phpstan analyse
 
-lint:
+cs-lint:
 	$(PHP) vendor/bin/php-cs-fixer fix --diff --dry-run
 
-fix:
+cs-fix:
 	$(PHP) vendor/bin/php-cs-fixer fix
 
 rector-dry:
