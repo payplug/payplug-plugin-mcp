@@ -3,10 +3,12 @@
 namespace PayplugPluginCore\Gateways\Payment;
 
 use PayplugPluginCore\Gateways\PaymentGateway;
+use PayplugPluginCore\Models\Entities\PaymentInputDTO;
 
 class StandardPaymentGateway extends PaymentGateway
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->id = 'standard';
         $this->expected_context = [
             'is_deferred',
@@ -16,19 +18,20 @@ class StandardPaymentGateway extends PaymentGateway
     }
 
     /**
-     * @param array $attributes
-     * @param array $context
-     * @return array|mixed
+     * @param PaymentInputDTO $payment_inputDTO
+     * @return array
      * @throws \Exception
      */
-    public function formatPaymentAttributes($attributes = [], $context = [])
+    public function formatPaymentAttributes(PaymentInputDTO $payment_inputDTO): array
     {
-        if (!is_array($attributes) || empty($attributes)) {
-            throw new \Exception('Invalid parameter, $attributes given should be a non empty array.');
+        $attributes = $this->getDefaultAttributeFromDTO($payment_inputDTO);
+        if (empty($attributes)) {
+            throw new \Exception('Can\'t generate default payment attributes');
         }
 
         // todo : Set validator to check this point
         // Vérification des clés attendues dans $context
+        $context = $payment_inputDTO->getContext();
         foreach ($this->expected_context as $key) {
             if (!array_key_exists($key, $context)) {
                 throw new \Exception('Resource attribe can\'t be formated, excepted parameter " ' . $key . '" is missing.');
@@ -49,7 +52,7 @@ class StandardPaymentGateway extends PaymentGateway
 
         // Update payment card could be saved
         $is_guest = isset($context['is_guest']) && $context['is_guest'];
-        $attributes['allow_save_card'] = !(bool) $is_guest;
+        $attributes['allow_save_card'] = !(bool)$is_guest;
 
         return $attributes;
     }
