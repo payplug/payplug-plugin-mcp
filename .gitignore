@@ -30,6 +30,3 @@ node_modules
 
 # Vendor
 vendor
-
-# unit tests
-tests
