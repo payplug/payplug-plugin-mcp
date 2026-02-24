@@ -61,6 +61,7 @@ class PaymentOutputDTO
     }
 
     // Getters
+
     /**
      * @return bool|null
      */
@@ -88,7 +89,7 @@ class PaymentOutputDTO
     /**
      * @return array[]|null
      */
-    public function getDefinitions(): ?array
+    public function getDefinitions(): array
     {
         return $this->definitions;
     }
@@ -96,12 +97,13 @@ class PaymentOutputDTO
     /**
      * @return object
      */
-    public function getResource()
+    public function getResource(): ?object
     {
         return $this->resource;
     }
 
     // Setters
+
     /**
      * @param bool $result
      * @return void

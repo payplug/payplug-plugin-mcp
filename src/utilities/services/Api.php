@@ -11,7 +11,7 @@ class Api
     /** @var string */
     private $bearer_token;
 
-    /** @var string  */
+    /** @var string */
     private const PAYMENT_CREATE = '\Payplug\Payment::create';
 
     /**
@@ -28,7 +28,7 @@ class Api
      */
     public function getBearerToken(): string
     {
-        return (string) $this->bearer_token;
+        return (string)$this->bearer_token;
     }
 
     /**
@@ -45,11 +45,9 @@ class Api
      * @return $this
      * @throws \Payplug\Exception\ConfigurationException
      */
-    public function load(string $bearer_token = '') {
-        if (!is_string($bearer_token)) {
-            throw new \Exception('Invalid parameter, $bearer_token given should be a string.');
-        }
-        $this->setBearerToken((string) $bearer_token);
+    public function load(string $bearer_token)
+    {
+        $this->setBearerToken((string)$bearer_token);
         $this->initialize();
         return $this;
     }
