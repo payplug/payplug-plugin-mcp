@@ -30,3 +30,11 @@ node_modules
 
 # Vendor
 vendor
+
+# PHP CS Fixer
+.php-cs-fixer.php
+.php-cs-fixer.cache
+
+# PHPStan
+var/
+.claude
