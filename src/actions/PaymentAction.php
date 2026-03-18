@@ -19,9 +19,6 @@ class PaymentAction
      */
     public function createAction(PaymentInputDTO $payment_inputDTO): object
     {
-        if (empty($payment_inputDTO)) {
-            throw new \Exception('Invalid parameter, $payment_inputDTO given should be a non empty object.');
-        }
 
         // todo: add a validator to check if the given paymentDTO is usable
 
