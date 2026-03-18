@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PayplugPluginCore\Actions;
 
-use PayplugPluginCore\Traits\dependenciesLoader;
 use PayplugPluginCore\Models\Entities\PaymentInputDTO;
 use PayplugPluginCore\Models\Entities\PaymentOutputDTO;
+use PayplugPluginCore\Traits\dependenciesLoader;
 
 class PaymentAction
 {
@@ -42,21 +44,21 @@ class PaymentAction
     /**
      * @description
      */
-    public function abortAction()
+    public function abortAction(): void
     {
     }
 
     /**
      * @description
      */
-    public function captureAction()
+    public function captureAction(): void
     {
     }
 
     /**
      * @description
      */
-    public function refundAction()
+    public function refundAction(): void
     {
     }
 }
