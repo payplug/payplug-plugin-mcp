@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PayplugPluginCore\services;
 
 use Payplug\Payplug;
@@ -11,8 +13,7 @@ class Api
     /** @var string */
     private $bearer_token;
 
-    /** @var string */
-    private const PAYMENT_CREATE = '\Payplug\Payment::create';
+    private const string PAYMENT_CREATE = '\Payplug\Payment::create';
 
     /**
      * @param array $datas
@@ -62,7 +63,7 @@ class Api
         try {
             $response = [
                 'result' => true,
-                'response' => call_user_func_array($callback, $params),
+                'response' => \call_user_func_array($callback, $params),
                 'code' => 200,
             ];
         } catch (\Exception $e) {

@@ -32,7 +32,7 @@ stan:
 	$(PHP) vendor/bin/phpstan analyse
 
 lint:
-	$(PHP) vendor/bin/php-cs-fixer fix --dry-run --diff
+	$(PHP) vendor/bin/php-cs-fixer fix --diff
 
 fix:
 	$(PHP) vendor/bin/php-cs-fixer fix

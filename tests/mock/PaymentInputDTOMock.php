@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PayPlug\tests\mock;
 
 class PaymentInputDTOMock
@@ -24,7 +26,7 @@ class PaymentInputDTOMock
                 'postcode' => 'NW16XE',
                 'city' => 'London',
                 'country' => 'GB',
-                'language' => 'en'
+                'language' => 'en',
             ],
             'shipping' => [
                 'title' => 'mr',
@@ -36,8 +38,8 @@ class PaymentInputDTOMock
                 'postcode' => 'NW16XE',
                 'city' => 'London',
                 'country' => 'GB',
-                'language' => 'en'
-            ]
+                'language' => 'en',
+            ],
         ];
         $paymentInputDTO->urls = [
             'return' => 'https://example.net/success?id=42',
