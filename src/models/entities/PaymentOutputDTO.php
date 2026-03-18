@@ -6,27 +6,26 @@ namespace PayplugPluginCore\Models\Entities;
 
 class PaymentOutputDTO
 {
-    /** @var boolean */
-    public $result;
-    /** @var string */
-    public $code;
-    /** @var string */
-    public $message;
-    /** @var object */
-    public $resource;
+    public ?bool $result = null;
+
+    public ?string $code = null;
+
+    public ?string $message = null;
+
+    public ?object $resource = null;
 
     /**
-     * @var array[]
+     * @var array<string, array{type: string, required: bool}>
      */
-    private $definitions = [
-        'result' => ['type' => 'boolean', 'required' => true],
-        'code' => ['type' => 'string', 'required' => true],
-        'message' => ['type' => 'string', 'required' => false],
-        'resource' => ['type' => 'object', 'required' => false],
+    private array $definitions = [
+        'result'   => ['type' => 'boolean', 'required' => true],
+        'code'     => ['type' => 'string',  'required' => true],
+        'message'  => ['type' => 'string',  'required' => false],
+        'resource' => ['type' => 'object',  'required' => false],
     ];
 
     /**
-     * @param array $props
+     * @param array<string, mixed> $props
      * @return $this|self|null
      */
     public function hydrate(array $props): ?self
@@ -43,61 +42,47 @@ class PaymentOutputDTO
             }
         }
 
-        $this->setResult((bool)$props['result']);
-        $this->setCode((string)$props['code']);
-        $this->setMessage((string)$props['message']);
+        $this->setResult((bool) $props['result']);
+        $this->setCode((string) $props['code']);
+        $this->setMessage((string) $props['message']);
         $this->setResource($props['resource']);
+
         return $this;
     }
 
-    /**
-     * @return void
-     */
     private function resetProperties(): void
     {
-        $this->result = null;
-        $this->code = null;
-        $this->message = null;
+        $this->result   = null;
+        $this->code     = null;
+        $this->message  = null;
         $this->resource = null;
     }
 
     // Getters
 
-    /**
-     * @return bool|null
-     */
     public function getResult(): ?bool
     {
         return $this->result;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMessage(): ?string
     {
         return $this->message;
     }
 
     /**
-     * @return array[]|null
+     * @return array<string, array{type: string, required: bool}>
      */
     public function getDefinitions(): array
     {
         return $this->definitions;
     }
 
-    /**
-     * @return object
-     */
     public function getResource(): ?object
     {
         return $this->resource;
@@ -105,44 +90,28 @@ class PaymentOutputDTO
 
     // Setters
 
-    /**
-     * @param bool $result
-     * @return void
-     */
     public function setResult(bool $result): void
     {
         $this->result = $result;
     }
 
-    /**
-     * @param string $code
-     * @return void
-     */
     public function setCode(string $code): void
     {
         $this->code = $code;
     }
 
-    /**
-     * @param string $message
-     * @return void
-     */
     public function setMessage(string $message): void
     {
         $this->message = $message;
     }
 
-    /**
-     * @param $resource
-     * @return void
-     */
-    public function setResource($resource): void
+    public function setResource(mixed $resource): void
     {
-        $this->resource = $resource;
+        $this->resource = \is_object($resource) ? $resource : null;
     }
 
     /**
-     * @param array $props
+     * @param array<string, mixed> $props
      * @return self|null
      */
     public static function create(array $props): ?self
