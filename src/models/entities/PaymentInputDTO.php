@@ -4,49 +4,48 @@ declare(strict_types=1);
 
 namespace PayplugPluginCore\Models\Entities;
 
+use Exception;
+
 class PaymentInputDTO
 {
-    /** @var string */
-    public $api_bearer;
+    public ?string $api_bearer = null;
 
-    /** @var string */
-    public $payment_method;
+    public ?string $payment_method = null;
 
-    /** @var int */
-    public $amount;
+    public ?int $amount = null;
 
-    /** @var string */
-    public $currency_iso_code;
+    public ?string $currency_iso_code = null;
 
-    /** @var array */
-    public $customer; // ['billing' => [...], 'shipping' => [...], 'identifier' => ...]
+    /** @var array<string, mixed>|null */
+    public ?array $customer = null; // ['billing' => [...], 'shipping' => [...], 'identifier' => ...]
 
-    /** @var array */
-    public $urls; // ['success' => ..., 'cancel' => ..., 'failure' => ...]
+    /** @var array<string, string>|null */
+    public ?array $urls = null; // ['return' => ..., 'cancel' => ..., 'notification' => ...]
 
-    /** @var array */
-    public $metadata;
+    /** @var array<string, mixed>|null */
+    public ?array $metadata = null;
 
-    /** @var array */
-    public $context;
+    /** @var array<string, mixed>|null */
+    public ?array $context = null;
 
     /**
-     * @var array[]
+     * @var array<string, array{type: string, required: bool}>
      */
-    private $definitions = [
-        'api_bearer' => ['type' => 'string', 'required' => true],
-        'payment_method' => ['type' => 'string', 'required' => true],
-        'amount' => ['type' => 'int', 'required' => true],
+    private array $definitions = [
+        'api_bearer'       => ['type' => 'string', 'required' => true],
+        'payment_method'   => ['type' => 'string', 'required' => true],
+        'amount'           => ['type' => 'int',    'required' => true],
         'currency_iso_code' => ['type' => 'string', 'required' => true],
-        'customer' => ['type' => 'array', 'required' => true],
-        'urls' => ['type' => 'array', 'required' => true],
-        'metadata' => ['type' => 'array', 'required' => false],
-        'context' => ['type' => 'array', 'required' => false],
+        'customer'         => ['type' => 'array',  'required' => true],
+        'urls'             => ['type' => 'array',  'required' => true],
+        'metadata'         => ['type' => 'array',  'required' => false],
+        'context'          => ['type' => 'array',  'required' => false],
     ];
 
     /**
-     * @param array $props
+     * @param array<string, mixed> $props
      * @return $this|self|null
+     * @throws Exception
      */
     public function hydrate(array $props): ?self
     {
@@ -58,104 +57,90 @@ class PaymentInputDTO
 
             if (!\array_key_exists($key, $props) || $props[$key] === null) {
                 $this->resetProperties();
-                throw new \Exception('PaymentInputDTO can\'t be hydrated, required field is invalid.');
+                throw new Exception('PaymentInputDTO can\'t be hydrated, required field is invalid.');
             }
         }
 
-        $this->setApiBearer((string)$props['api_bearer']);
-        $this->setPaymentMethod((string)$props['payment_method']);
-        $this->setAmount((int)$props['amount']);
-        $this->setCurrencyIsoCode((string)$props['currency_iso_code']);
-        $this->setCustomer((array)$props['customer']);
-        $this->setReturnUrls((array)$props['urls']);
-        $this->setMetadata((array)$props['metadata']);
-        $this->setContext((array)$props['context']);
+        $this->setApiBearer((string) $props['api_bearer']);
+        $this->setPaymentMethod((string) $props['payment_method']);
+        $this->setAmount((int) $props['amount']);
+        $this->setCurrencyIsoCode((string) $props['currency_iso_code']);
+        $this->setCustomer((array) $props['customer']);
+        $this->setReturnUrls((array) $props['urls']);
+        $this->setMetadata((array) $props['metadata']);
+        $this->setContext((array) $props['context']);
+
         return $this;
     }
 
-    /**
-     * @return void
-     */
     private function resetProperties(): void
     {
-        $this->api_bearer = null;
-        $this->payment_method = null;
-        $this->amount = null;
+        $this->api_bearer        = null;
+        $this->payment_method    = null;
+        $this->amount            = null;
         $this->currency_iso_code = null;
-        $this->customer = null;
-        $this->urls = null;
-        $this->metadata = null;
-        $this->context = null;
+        $this->customer          = null;
+        $this->urls              = null;
+        $this->metadata          = null;
+        $this->context           = null;
     }
 
     // Getters
 
-    /**
-     * @return int
-     */
-    public function getAmount(): int
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
 
-    /**
-     * @return string
-     */
-    public function getApiBearer(): string
+    public function getApiBearer(): ?string
     {
         return $this->api_bearer;
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>|null
      */
-    public function getContext(): array
+    public function getContext(): ?array
     {
         return $this->context;
     }
 
-    /**
-     * @return string
-     */
-    public function getCurrencyIsoCode(): string
+    public function getCurrencyIsoCode(): ?string
     {
         return $this->currency_iso_code;
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>|null
      */
-    public function getCustomer(): array
+    public function getCustomer(): ?array
     {
         return $this->customer;
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>|null
      */
-    public function getMetadata(): array
+    public function getMetadata(): ?array
     {
         return $this->metadata;
     }
 
-    /**
-     * @return string
-     */
-    public function getPaymentMethod(): string
+    public function getPaymentMethod(): ?string
     {
         return $this->payment_method;
     }
 
     /**
-     * @return array
+     * @return array<string, string>|null
      */
-    public function getReturnUrls(): array
+    public function getReturnUrls(): ?array
     {
         return $this->urls;
     }
 
     /**
-     * @return array[]
+     * @return array<string, array{type: string, required: bool}>
      */
     public function getDefinitions(): array
     {
@@ -164,45 +149,31 @@ class PaymentInputDTO
 
     // Setters
 
-    /**
-     * @param int $amount
-     * @return void
-     */
     public function setAmount(int $amount): void
     {
         $this->amount = $amount;
     }
 
-    /**
-     * @param string $api_bearer
-     * @return void
-     */
     public function setApiBearer(string $api_bearer): void
     {
         $this->api_bearer = $api_bearer;
     }
 
     /**
-     * @param array $context
-     * @return void
+     * @param array<string, mixed> $context
      */
     public function setContext(array $context): void
     {
         $this->context = $context;
     }
 
-    /**
-     * @param string $currency_iso_code
-     * @return void
-     */
     public function setCurrencyIsoCode(string $currency_iso_code): void
     {
         $this->currency_iso_code = $currency_iso_code;
     }
 
     /**
-     * @param array $customer
-     * @return void
+     * @param array<string, mixed> $customer
      */
     public function setCustomer(array $customer): void
     {
@@ -210,26 +181,20 @@ class PaymentInputDTO
     }
 
     /**
-     * @param array $metadata
-     * @return void
+     * @param array<string, mixed> $metadata
      */
     public function setMetadata(array $metadata): void
     {
         $this->metadata = $metadata;
     }
 
-    /**
-     * @param string $payment_method
-     * @return void
-     */
     public function setPaymentMethod(string $payment_method): void
     {
         $this->payment_method = $payment_method;
     }
 
     /**
-     * @param array $urls
-     * @return void
+     * @param array<string, string> $urls
      */
     public function setReturnUrls(array $urls): void
     {
@@ -237,7 +202,7 @@ class PaymentInputDTO
     }
 
     /**
-     * @param array $props
+     * @param array<string, mixed> $props
      * @return self|null
      */
     public static function create(array $props): ?self

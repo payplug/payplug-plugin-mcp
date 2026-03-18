@@ -8,11 +8,10 @@ use PayplugPluginCore\Models\Entities\PaymentInputDTO;
 
 class PaymentGateway
 {
-    /** @var string */
-    protected $id;
+    protected string $id;
 
-    /** @var array */
-    protected $expected_context;
+    /** @var array<int, string> */
+    protected array $expected_context;
 
     /**
      * @param string $payment_gateway_name
@@ -31,31 +30,26 @@ class PaymentGateway
         if (!class_exists($payment_gateway_path)) {
             throw new \Exception('Payment Gateway can\'t be found.');
         }
-        $payment_gateway = new $payment_gateway_path();
 
-        return $payment_gateway;
+        return new $payment_gateway_path();
     }
 
     /**
      * @param PaymentInputDTO $payment_inputDTO
-     * @return array
+     * @return array<string, mixed>
      */
     public function getDefaultAttributeFromDTO(PaymentInputDTO $payment_inputDTO): array
     {
-        if (empty($payment_inputDTO)) {
-            throw new \Exception('Invalid parameter, $payment_inputDTO given should be a non empty object.');
-        }
-
         return [
             'amount' => $payment_inputDTO->getAmount(),
-            'currency' => $payment_inputDTO->getCurrency(),
+            'currency' => $payment_inputDTO->getCurrencyIsoCode(),
             'billing' => $payment_inputDTO->getCustomer()['billing'],
             'shipping' => $payment_inputDTO->getCustomer()['shipping'] + ['delivery_type' => 'BILLING'],
             'hosted_payment' => [
-                'return_url' => $payment_inputDTO->getUrls()['return'],
-                'cancel_url' => $payment_inputDTO->getUrls()['cancel'],
+                'return_url' => $payment_inputDTO->getReturnUrls()['return'],
+                'cancel_url' => $payment_inputDTO->getReturnUrls()['cancel'],
             ],
-            'notification_url' => $payment_inputDTO->getUrls()['notification'],
+            'notification_url' => $payment_inputDTO->getReturnUrls()['notification'],
             'metadata' => $payment_inputDTO->getMetadata(),
             'allow_save_card' => false,
             'force_3ds' => false,
