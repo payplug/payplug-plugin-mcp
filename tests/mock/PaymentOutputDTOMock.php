@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PayPlug\tests\mock;
 
 use Payplug\Resource\Payment;
@@ -14,7 +16,7 @@ class PaymentOutputDTOMock
     public $message;
     /** @var object */
     public $resource;
-    
+
     public static function get()
     {
         $paymentOutputDTO = new \stdClass();
@@ -76,7 +78,7 @@ class PaymentOutputDTOMock
                 'postcode' => 'NW16XE',
                 'city' => 'London',
                 'country' => 'GB',
-                'language' => 'en'
+                'language' => 'en',
             ],
             'shipping' => [
                 'title' => 'mr',
