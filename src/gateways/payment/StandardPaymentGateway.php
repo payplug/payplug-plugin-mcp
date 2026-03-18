@@ -21,7 +21,7 @@ class StandardPaymentGateway extends PaymentGateway
 
     /**
      * @param PaymentInputDTO $payment_inputDTO
-     * @return array
+     * @return array<string, mixed>
      * @throws \Exception
      */
     public function formatPaymentAttributes(PaymentInputDTO $payment_inputDTO): array

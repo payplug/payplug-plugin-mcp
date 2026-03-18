@@ -6,15 +6,14 @@ namespace PayplugPluginCore\Traits;
 
 trait dependenciesLoader
 {
-    /** @var array */
-    private $allowed_services = [];
+    /** @var array<int, string> */
+    private array $allowed_services = [];
 
-    /** @var array */
-    private $allowed_gateways = [];
+    /** @var array<int, string> */
+    private array $allowed_gateways = [];
 
     /**
-     * @param $name
-     * @return mixed
+     * @return object
      * @throws \Exception
      */
     public function get_service(string $name = ''): object
@@ -36,8 +35,7 @@ trait dependenciesLoader
     }
 
     /**
-     * @param $name
-     * @return mixed
+     * @return object
      * @throws \Exception
      */
     public function get_gateway(string $name = ''): object
