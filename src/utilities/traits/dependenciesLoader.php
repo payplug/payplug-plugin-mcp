@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PayplugPluginCore\Traits;
 
 trait dependenciesLoader
@@ -21,7 +23,7 @@ trait dependenciesLoader
             throw new \Exception('Invalid parameter, $name given should be a non empty string.');
         }
 
-        if (!in_array($name, $this->allowed_services)) {
+        if (!\in_array($name, $this->allowed_services)) {
             throw new \Exception('Given $name is not allower services.');
         }
 
@@ -44,7 +46,7 @@ trait dependenciesLoader
             throw new \Exception('Invalid parameter, $name given should be a non empty string.');
         }
 
-        if (!in_array($name, $this->allowed_gateways)) {
+        if (!\in_array($name, $this->allowed_gateways)) {
             throw new \Exception('Given $name is not allower gateways.');
         }
 

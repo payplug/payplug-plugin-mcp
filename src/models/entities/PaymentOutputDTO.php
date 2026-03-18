@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace PayplugPluginCore\Models\Entities;
 
@@ -36,7 +37,7 @@ class PaymentOutputDTO
                 continue;
             }
 
-            if (!array_key_exists($key, $props) || $props[$key] === null) {
+            if (!\array_key_exists($key, $props) || $props[$key] === null) {
                 $this->resetProperties();
                 throw new \Exception('PaymentOutputDTO can\'t be hydrated, required field is invalid.');
             }
