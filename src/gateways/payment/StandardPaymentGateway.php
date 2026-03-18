@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PayplugPluginCore\Gateways\Payment;
 
 use PayplugPluginCore\Gateways\PaymentGateway;
@@ -33,7 +35,8 @@ class StandardPaymentGateway extends PaymentGateway
         // Vérification des clés attendues dans $context
         $context = $payment_inputDTO->getContext();
         foreach ($this->expected_context as $key) {
-            if (!array_key_exists($key, $context)) {
+            if (!\array_key_exists($key, $context)) {
+                //@TODO: Create Exception System for the Library to avoid trigerring basic Exception all the time
                 throw new \Exception('Resource attribe can\'t be formated, excepted parameter " ' . $key . '" is missing.');
             }
         }

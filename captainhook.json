@@ -23,7 +23,7 @@
               "options": {}
           },
           {
-              "action": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff",
+              "action": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --diff",
               "options": {}
           }
       ],
