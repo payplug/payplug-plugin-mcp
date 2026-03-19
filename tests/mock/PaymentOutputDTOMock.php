@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayPlug\tests\mock;
+namespace PayplugPluginCore\tests\mock;
 
 use Payplug\Resource\Payment;
 
@@ -27,7 +27,7 @@ class PaymentOutputDTOMock
 
         $payment_attributes = [
             'id' => 'pay_id',
-            'object' => 'payment',
+            'object' => 'Payment',
             'is_live' => true,
             'amount' => 4200,
             'amount_refunded' => 0,

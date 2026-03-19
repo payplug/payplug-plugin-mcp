@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\services;
+namespace PayplugPluginCore\Utilities\Services;
 
+use Payplug\Payment;
 use Payplug\Payplug;
 
 class Api
 {
     private string $bearer_token;
 
-    private const string PAYMENT_CREATE = '\Payplug\Payment::create';
+    /** @var array{0: class-string<Payment>, 1: string} */
+    private const array PAYMENT_CREATE = [Payment::class, 'create'];
 
     /**
      * @param array<string, mixed> $datas
@@ -47,7 +49,7 @@ class Api
      * @param array<string, mixed> $params
      * @return array<string, mixed>
      */
-    protected function doRequest(string $callback, array $params): array
+    protected function doRequest(callable $callback, array $params): array
     {
         try {
             $response = [
