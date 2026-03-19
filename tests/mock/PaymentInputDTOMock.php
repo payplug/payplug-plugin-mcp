@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayPlug\tests\mock;
+namespace PayplugPluginCore\tests\mock;
 
 class PaymentInputDTOMock
 {
@@ -11,7 +11,7 @@ class PaymentInputDTOMock
         $paymentInputDTO = new \stdClass();
 
         $paymentInputDTO->api_bearer = 'token_bearer';
-        $paymentInputDTO->payment_method = 'payment method';
+        $paymentInputDTO->payment_method = 'Payment method';
         $paymentInputDTO->amount = 4242;
         $paymentInputDTO->currency_iso_code = 'EUR';
         $paymentInputDTO->customer = [

@@ -18,7 +18,7 @@ shell:
 	$(PHP) bash
 
 ## Composer
-install:
+comp-install:
 	$(PHP) composer install
 
 update:
@@ -32,7 +32,7 @@ stan:
 	$(PHP) vendor/bin/phpstan analyse
 
 lint:
-	$(PHP) vendor/bin/php-cs-fixer fix --diff
+	$(PHP) vendor/bin/php-cs-fixer fix --diff --dry-run
 
 fix:
 	$(PHP) vendor/bin/php-cs-fixer fix
@@ -49,3 +49,10 @@ debug:
 
 ## CI (runs all checks)
 ci: stan lint test
+
+install: build update comp-install
+
+audit:
+	$(PHP) composer audit
+
+security: audit
