@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PayplugPluginCore\Gateways\Payment;
 
-use PayplugPluginCore\Gateways\PaymentGateway;
+use PayplugPluginCore\Gateways\AbstractPaymentGateway;
 use PayplugPluginCore\Models\Entities\PaymentInputDTO;
 
-class StandardPaymentGateway extends PaymentGateway
+class StandardPaymentGateway extends AbstractPaymentGateway
 {
     public function __construct()
     {
@@ -28,12 +28,12 @@ class StandardPaymentGateway extends PaymentGateway
     {
         $attributes = $this->getDefaultAttributeFromDTO($payment_inputDTO);
         if (empty($attributes)) {
-            throw new \Exception('Can\'t generate default payment attributes');
+            throw new \Exception('Can\'t generate default Payment attributes');
         }
 
         // todo : Set validator to check this point
         // Vérification des clés attendues dans $context
-        $context = $payment_inputDTO->getContext();
+        $context = $payment_inputDTO->getContext() ?? [];
         foreach ($this->expected_context as $key) {
             if (!\array_key_exists($key, $context)) {
                 //@TODO: Create Exception System for the Library to avoid trigerring basic Exception all the time
@@ -41,7 +41,7 @@ class StandardPaymentGateway extends PaymentGateway
             }
         }
 
-        // Update if deferred payment is enable
+        // Update if deferred Payment is enable
         if (isset($context['is_deferred']) && $context['is_deferred']) {
             $attributes['authorized_amount'] = $attributes['amount'];
             unset($attributes['amount']);
@@ -53,7 +53,7 @@ class StandardPaymentGateway extends PaymentGateway
             unset($attributes['hosted_payment']['cancel_url']);
         }
 
-        // Update payment card could be saved
+        // Update Payment card could be saved
         $is_guest = isset($context['is_guest']) && $context['is_guest'];
         $attributes['allow_save_card'] = !(bool)$is_guest;
 

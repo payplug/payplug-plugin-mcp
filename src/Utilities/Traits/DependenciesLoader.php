@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Traits;
+namespace PayplugPluginCore\Utilities\Traits;
 
-trait dependenciesLoader
+use PayplugPluginCore\Gateways\PaymentGatewayManager;
+
+trait DependenciesLoader
 {
     /** @var array<int, string> */
     private array $allowed_services = [];
@@ -23,10 +25,10 @@ trait dependenciesLoader
         }
 
         if (!\in_array($name, $this->allowed_services)) {
-            throw new \Exception('Given $name is not allower services.');
+            throw new \Exception('Given $name is not allower Services.');
         }
 
-        $service_name = '\PayplugPluginCore\services\\' . str_replace('_', '', ucwords($name, '_'));
+        $service_name = '\PayplugPluginCore\Utilities\Services\\' . str_replace('_', '', ucwords($name, '_'));
         if (!class_exists($service_name)) {
             throw new \Exception('Service can\'t be found.');
         }
@@ -35,6 +37,7 @@ trait dependenciesLoader
     }
 
     /**
+     * @param string $name
      * @return object
      * @throws \Exception
      */
@@ -44,15 +47,23 @@ trait dependenciesLoader
             throw new \Exception('Invalid parameter, $name given should be a non empty string.');
         }
 
-        if (!\in_array($name, $this->allowed_gateways)) {
-            throw new \Exception('Given $name is not allower gateways.');
+        if (!\in_array($name, $this->allowed_gateways, true)) {
+            throw new \Exception('Given $name is not allower Gateways.');
         }
 
-        $gateway_name = '\PayplugPluginCore\gateways\\' . str_replace('_', '', ucwords($name, '_')) . 'Gateway';
+        $gateway_name = '\PayplugPluginCore\Gateways\\' . str_replace('_', '', ucwords($name, '_')) . 'Gateway';
         if (!class_exists($gateway_name)) {
             throw new \Exception('Gateway can\'t be found.');
         }
 
         return new $gateway_name();
+    }
+
+    public function get_payment_gateway(): PaymentGatewayManager
+    {
+        /** @var PaymentGatewayManager $gateway */
+        $gateway = $this->get_gateway('payment');
+
+        return $gateway;
     }
 }
