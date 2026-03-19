@@ -6,36 +6,45 @@ namespace PayplugPluginCore\Actions;
 
 use PayplugPluginCore\Models\Entities\PaymentInputDTO;
 use PayplugPluginCore\Models\Entities\PaymentOutputDTO;
-use PayplugPluginCore\Traits\dependenciesLoader;
+use PayplugPluginCore\Utilities\Services\Api;
+use PayplugPluginCore\Utilities\Traits\DependenciesLoader;
 
 class PaymentAction
 {
-    use dependenciesLoader;
+    use DependenciesLoader;
 
     /**
      * @param PaymentInputDTO $payment_inputDTO
      * @return PaymentOutputDTO
      * @throws \Exception
      */
-    public function createAction(PaymentInputDTO $payment_inputDTO): object
+    public function createAction(PaymentInputDTO $payment_inputDTO): PaymentOutputDTO
     {
-
         // todo: add a validator to check if the given paymentDTO is usable
+
+        if (null === $payment_inputDTO->getPaymentMethod()) {
+            throw new \Exception('Invalid parameter, payment method is required.');
+        }
 
         // get payment method from given arg
         $payment_method = $this
-            ->get_gateway('payment')
+            ->get_payment_gateway()
             ->load($payment_inputDTO->getPaymentMethod());
 
         // get payment tab appropriate or return error if need to
         $formated_attributes = $payment_method->formatPaymentAttributes($payment_inputDTO);
 
         // load api service with given then return the fallback
-        $api = $this
-            ->get_service('api')
-            ->load((string)$payment_inputDTO->getApiBearer());
+        /** @var Api $api_service */
+        $api_service = $this->get_service('api');
+        $api = $api_service->load((string) $payment_inputDTO->getApiBearer());
         $resource = $api->createPaymentResource($formated_attributes);
-        return PaymentOutputDTO::create($resource);
+        $output = PaymentOutputDTO::create($resource);
+        if ($output === null) {
+            throw new \Exception('Failed to build PaymentOutputDTO from API response.');
+        }
+
+        return $output;
     }
 
     /**

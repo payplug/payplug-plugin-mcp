@@ -116,7 +116,6 @@ class PaymentOutputDTO
      */
     public static function create(array $props): ?self
     {
-        $instance = new self();
-        return $instance->hydrate($props);
+        return new self()->hydrate($props);
     }
 }
