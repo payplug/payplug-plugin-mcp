@@ -25,7 +25,7 @@ class PaymentGateway
 
         $payment_gateway_path = '\PayplugPluginCore\gateways\payment\\'
             . str_replace('_', '', ucwords($payment_gateway_name, '_'))
-            . 'Gateway';
+            . 'PaymentGateway';
         if (!class_exists($payment_gateway_path)) {
             throw new \Exception('Payment Gateway can\'t be found.');
         }
