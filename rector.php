@@ -5,11 +5,11 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 
 /**
- * Release configuration: downgrades src/ to PHP 7.2 into the release/ directory.
+ * Release configuration: downgrades src/ to PHP 7.2 into the payplug-core/ directory.
  *
  * Workflow:
- *   1. Copy src/ → release/  (done by the Makefile `release` target)
- *   2. Run: vendor/bin/rector process --config rector-release.php
+ *   1. Copy src/ → payplug-core/  (done by the Makefile `release` target)
+ *   2. Run: vendor/bin/rector process
  */
 return RectorConfig::configure()
     ->withPaths([

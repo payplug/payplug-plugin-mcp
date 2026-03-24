@@ -26,24 +26,36 @@ if (!is_dir($root . '/payplug-core')) {
     exit(1);
 }
 
-$data = json_decode(file_get_contents($source), true, 512, JSON_THROW_ON_ERROR);
+try {
+    $jsonContent = file_get_contents($source);
+    if ($jsonContent === false) {
+        fwrite(STDERR, "Error: Failed to read {$source}\n");
+        exit(1);
+    }
+    $data = json_decode($jsonContent, true, 512, JSON_THROW_ON_ERROR);
+} catch (JsonException $e) {
+    fwrite(STDERR, "Error: Failed to decode {$source} as JSON: " . $e->getMessage() . "\n");
+    exit(1);
+}
 
 // Downgrade PHP requirement
 $data['require']['php'] = '^7.2';
 
 // Remove dev-only dependencies from require
-unset($data['require']['captainhook/captainhook']);
+unset($data['require']['captainhook/captainhook'], $data['require-dev'], $data['autoload-dev'], $data['scripts']);
 
 // Strip dev-only sections
-unset($data['require-dev']);
-unset($data['autoload-dev']);
-unset($data['scripts']);
 
 // Fix autoload: release/ is the package root, not src/
 $data['autoload']['psr-4'] = ['PayplugPluginCore\\' => ''];
 
 $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
 
-file_put_contents($target, $json);
+$bytesWritten = file_put_contents($target, $json);
 
-echo "Generated release/composer.json (PHP ^7.2)\n";
+if ($bytesWritten === false || $bytesWritten < strlen($json)) {
+    fwrite(STDERR, "Error: Failed to write composer.json to {$target}\n");
+    exit(1);
+}
+
+echo "Generated {$target} (PHP ^7.2)\n";

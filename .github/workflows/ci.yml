@@ -2,6 +2,9 @@ name: CI
 
 on:
   push:
+    branches-ignore:
+      - develop
+      - main
     tags:
       - '*'
   pull_request:
@@ -12,20 +15,21 @@ on:
 jobs:
   # -----------------------------------------------------------------------
   # 1. QUALITY — static analysis & code style on PHP 8.4 source
-  #    Runs on: PR opened/updated → develop
+  #    Runs on: push to feature branch  |  PR opened/updated → develop
   # -----------------------------------------------------------------------
   quality:
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    if: github.ref_type != 'tag' && github.event.action != 'closed'
     uses: payplug/template-ci/.github/workflows/php-quality.yml@main
     with:
       php-version: '8.4'
 
   # -----------------------------------------------------------------------
   # 2. DOWNGRADE — transpile src/ + tests/ to PHP 7.2
-  #    Runs on: PR opened/updated → develop
+  #    Runs on: push to feature branch  |  PR opened/updated → develop
   # -----------------------------------------------------------------------
   downgrade:
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    if: github.ref_type != 'tag' && github.event.action != 'closed'
+    needs: quality
     uses: payplug/template-ci/.github/workflows/php-downgrade.yml@main
     with:
       php-version: '8.4'
@@ -34,10 +38,10 @@ jobs:
 
   # -----------------------------------------------------------------------
   # 3. VALIDATE — install the downgraded package under PHP 7.2
-  #    Runs on: PR opened/updated → develop
+  #    Runs on: push to feature branch  |  PR opened/updated → develop
   # -----------------------------------------------------------------------
   validate:
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    if: github.ref_type != 'tag' && github.event.action != 'closed'
     needs: downgrade
     uses: payplug/template-ci/.github/workflows/php-validate.yml@main
     with:
@@ -46,11 +50,11 @@ jobs:
 
   # -----------------------------------------------------------------------
   # 4. TEST — run unit tests against the downgraded PHP 7.2 code
-  #    Runs on: PR opened/updated → develop
+  #    Runs on: push to feature branch  |  PR opened/updated → develop
   # -----------------------------------------------------------------------
   test-php72:
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
-    needs: downgrade
+    if: github.ref_type != 'tag' && github.event.action != 'closed'
+    needs: validate
     uses: payplug/template-ci/.github/workflows/php-test-php72.yml@main
     with:
       php-version: '7.2'
@@ -71,7 +75,7 @@ jobs:
   # 6. RELEASE — create a GitHub Release from a tag on main
   # -----------------------------------------------------------------------
   release:
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    if: github.event_name == 'push' && github.ref_type == 'tag'
     uses: payplug/template-ci/.github/workflows/php-release.yml@main
     with:
       php-version: '8.4'
