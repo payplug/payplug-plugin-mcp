@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class standardPaymentGatewayBase extends TestCase
 {
-    protected $gateway;
+    protected StandardPaymentGateway&\Mockery\MockInterface $gateway;
 
     public function setUp(): void
     {

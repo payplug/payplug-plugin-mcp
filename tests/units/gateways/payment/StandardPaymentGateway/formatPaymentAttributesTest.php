@@ -12,17 +12,20 @@ use PayplugPluginCore\Tests\Mock\PaymentInputDTOMock;
  * @group payment
  * @group standard_payment_gateway
  */
-class StandardPaymentGatewayTest extends standardPaymentGatewayBase
+class formatPaymentAttributesTest extends standardPaymentGatewayBase
 {
     public function setUp(): void
     {
         parent::setUp();
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function testWhenGivenDTOIsInvalid(): void
     {
         $this->expectException(\TypeError::class);
-        $this->gateway->formatPaymentAttributes(null);
+        new \ReflectionMethod($this->gateway, 'formatPaymentAttributes')->invoke($this->gateway, null);
     }
 
     public function testWhenDefaultAttributesCanBeSet(): void
@@ -37,7 +40,7 @@ class StandardPaymentGatewayTest extends standardPaymentGatewayBase
         $this->gateway->formatPaymentAttributes(PaymentInputDTOMock::get([]));
     }
 
-    public function StandardPaymentRequiredContext()
+    public static function StandardPaymentRequiredContext(): \Generator
     {
         yield ['is_deferred'];
         yield ['is_integrated'];
@@ -97,6 +100,7 @@ class StandardPaymentGatewayTest extends standardPaymentGatewayBase
             'is_guest' => false,
         ];
         $context[$key] = true;
+        $expected = [];
         switch ($key) {
             case 'is_deferred':
                 $expected = [

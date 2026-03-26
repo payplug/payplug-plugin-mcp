@@ -6,7 +6,7 @@ namespace PayplugPluginCore\Tests\Traits;
 
 trait FormatDataProvider
 {
-    public function invalidArrayFormatDataProvider()
+    public function invalidArrayFormatDataProvider(): \Generator
     {
         yield [42];
 
@@ -17,7 +17,7 @@ trait FormatDataProvider
         yield ['lorem ipsum'];
     }
 
-    public function invalidBoolFormatDataProvider()
+    public function invalidBoolFormatDataProvider(): \Generator
     {
         yield ['lorem Ipsum'];
 
@@ -28,7 +28,7 @@ trait FormatDataProvider
         yield [null];
     }
 
-    public function invalidIntegerFormatDataProvider()
+    public function invalidIntegerFormatDataProvider(): \Generator
     {
         yield [null];
 
@@ -39,7 +39,7 @@ trait FormatDataProvider
         yield ['lorem ipsum'];
     }
 
-    public function invalidFloatFormatDataProvider()
+    public function invalidFloatFormatDataProvider(): \Generator
     {
         yield [null];
 
@@ -52,7 +52,7 @@ trait FormatDataProvider
         yield [42];
     }
 
-    public function invalidNumericFormatDataProvider()
+    public function invalidNumericFormatDataProvider(): \Generator
     {
         yield [null];
 
@@ -65,7 +65,7 @@ trait FormatDataProvider
         yield ['123abc'];
     }
 
-    public function invalidJSONFormatDataProvider()
+    public function invalidJSONFormatDataProvider(): \Generator
     {
         yield [''];
 
@@ -76,7 +76,7 @@ trait FormatDataProvider
         yield ['{{}}'];
     }
 
-    public function invalidObjectFormatDataProvider()
+    public function invalidObjectFormatDataProvider(): \Generator
     {
         yield [42];
 
@@ -87,7 +87,7 @@ trait FormatDataProvider
         yield ['lorem ipsum'];
     }
 
-    public function invalidStringFormatDataProvider()
+    public function invalidStringFormatDataProvider(): \Generator
     {
         yield [42];
 
@@ -98,7 +98,7 @@ trait FormatDataProvider
         yield [null];
     }
 
-    public function invalidEmailFormatDataProvider()
+    public function invalidEmailFormatDataProvider(): \Generator
     {
         yield ['@test.com'];
 
@@ -107,7 +107,7 @@ trait FormatDataProvider
         yield ['emailtest.com'];
     }
 
-    public function invalidPhoneFormatDataProvider()
+    public function invalidPhoneFormatDataProvider(): \Generator
     {
         yield [42];
 

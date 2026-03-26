@@ -2,26 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Gateways;
+namespace PayplugPluginCore\Tests\Units\Gateways;
 
 use PayplugPluginCore\Models\Entities\PaymentInputDTO;
 
 class PaymentGateway
 {
-    /** @var string */
-    protected $id;
-
-    /** @var array */
-    protected $expected_context;
+    protected string $id;
+    /** @var array<string, mixed> */
+    protected array $expected_context;
 
     /**
      * @param string $payment_gateway_name
      *
      * @throws \Exception
-     *
-     * @return PaymentGateway
      */
-    public function load(string $payment_gateway_name): object
+    public function load(string $payment_gateway_name): self
     {
         if (empty($payment_gateway_name)) {
             throw new \Exception('Invalid parameter, $payment_gateway_name given should be a non empty string.');
@@ -34,30 +30,34 @@ class PaymentGateway
             throw new \Exception('Payment Gateway can\'t be found.');
         }
 
-        return new $payment_gateway_path();
+        $instance = new $payment_gateway_path();
+        if (!$instance instanceof self) {
+            throw new \Exception('Payment Gateway class does not extend PaymentGateway.');
+        }
+
+        return $instance;
     }
 
     /**
      * @param PaymentInputDTO $payment_inputDTO
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getDefaultAttributeFromDTO(PaymentInputDTO $payment_inputDTO): array
     {
-        if (empty($payment_inputDTO)) {
-            throw new \Exception('Invalid parameter, $payment_inputDTO given should be a non empty object.');
-        }
+        $customer = $payment_inputDTO->getCustomer() ?? [];
+        $urls = $payment_inputDTO->getUrls() ?? [];
 
         return [
             'amount' => $payment_inputDTO->getAmount(),
             'currency' => $payment_inputDTO->getCurrencyIsoCode(),
-            'billing' => $payment_inputDTO->getCustomer()['billing'],
-            'shipping' => $payment_inputDTO->getCustomer()['shipping'] + ['delivery_type' => 'BILLING'],
+            'billing' => $customer['billing'] ?? null,
+            'shipping' => ($customer['shipping'] ?? []) + ['delivery_type' => 'BILLING'],
             'hosted_payment' => [
-                'return_url' => $payment_inputDTO->getUrls()['return'],
-                'cancel_url' => $payment_inputDTO->getUrls()['cancel'],
+                'return_url' => $urls['return'] ?? null,
+                'cancel_url' => $urls['cancel'] ?? null,
             ],
-            'notification_url' => $payment_inputDTO->getUrls()['notification'],
+            'notification_url' => $urls['notification'] ?? null,
             'metadata' => $payment_inputDTO->getMetadata(),
             'allow_save_card' => false,
             'force_3ds' => false,

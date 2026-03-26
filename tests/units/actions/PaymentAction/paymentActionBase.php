@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class paymentActionBase extends TestCase
 {
-    protected $action;
+    protected PaymentAction&\Mockery\MockInterface $action;
 
     public function setUp(): void
     {
