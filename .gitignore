@@ -37,4 +37,5 @@ vendor
 
 # PHPStan
 var/
+/
 .claude
