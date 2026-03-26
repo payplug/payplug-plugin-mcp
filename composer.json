@@ -17,7 +17,10 @@
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.0",
+    "mockery/mockery": "^1.6",
     "phpstan/phpstan": "^2.0",
+    "phpstan/phpstan-mockery": "*",
+    "phpstan/phpstan-phpunit": "*",
     "phpunit/phpunit": "^11.0",
     "rector/rector": "^2.0"
   },
@@ -28,13 +31,15 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "PayplugPluginCore\\tests\\": "tests/"
+      "PayplugPluginCore\\Tests\\": "tests/"
     }
   },
   "scripts": {
     "post-install-cmd": "vendor/bin/captainhook install --force --skip-existing",
     "post-update-cmd": "vendor/bin/captainhook install --force --skip-existing",
-    "test": "vendor/bin/phpunit",
+    "test": "vendor/bin/phpunit tests",
+    "test-unit": "vendor/bin/phpunit tests --group unit",
+    "test-inte": "vendor/bin/phpunit tests --group integration",
     "stan": "vendor/bin/phpstan analyse --configuration=phpstan.neon",
     "cs-lint": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff",
     "cs-fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",

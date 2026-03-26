@@ -17,7 +17,7 @@ class PaymentGatewayManager
 
         $class = '\PayplugPluginCore\Gateways\Payment\\'
             . str_replace('_', '', ucwords($payment_method_name, '_'))
-            . 'PaymentGatewayManager';
+            . 'PaymentGateway';
 
         if (!class_exists($class)) {
             throw new \Exception('Payment method can\'t be found.');
