@@ -46,7 +46,7 @@
     "rector": "vendor/bin/rector process",
     "rector-dry": "vendor/bin/rector process --dry-run",
     "release": [
-      "rm -rf payplug-core && cp -r src payplug-core && cp -r tests payplug-core",
+      "rm -rf payplug-core && mkdir payplug-core && cp -r src payplug-core/ && cp -r tests payplug-core/",
       "vendor/bin/rector process --config rector.php",
       "php scripts/generate-release-composer.php"
     ]

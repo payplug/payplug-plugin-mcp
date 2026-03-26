@@ -8,8 +8,8 @@ declare(strict_types=1);
  * Changes applied:
  *  - php requirement → ^7.2
  *  - captainhook removed from require (dev-only tool)
- *  - require-dev, autoload-dev, and scripts sections stripped
- *  - autoload psr-4 path changed from src/ to "" (release/ is the package root)
+ *  - require-dev replaced with PHP 7.2-compatible versions (phpunit ^8.5, mockery ^1.3)
+ *  - autoload psr-4: PayplugPluginCore\ → src/; tests/ added so class resolution works with --no-dev
  */
 
 $root = dirname(__DIR__);
@@ -41,13 +41,26 @@ try {
 // Downgrade PHP requirement
 $data['require']['php'] = '^7.2';
 
-// Remove dev-only dependencies from require
-unset($data['require']['captainhook/captainhook'], $data['require-dev'], $data['autoload-dev'], $data['scripts']);
+// Remove dev-only tools from require and scripts
+unset($data['require']['captainhook/captainhook'], $data['scripts']);
 
-// Strip dev-only sections
+// Replace require-dev with PHP 7.2-compatible test dependencies
+// (phpunit ^11 requires PHP >=8.2; mockery ^1.6 requires PHP >=7.3)
+$data['require-dev'] = [
+    'phpunit/phpunit'   => '^8.5',  // PHPUnit 8.x requires PHP >=7.2
+    'mockery/mockery'   => '^1.3',  // Mockery 1.3.x requires PHP >=5.4
+];
 
-// Fix autoload: release/ is the package root, not src/
-$data['autoload']['psr-4'] = ['PayplugPluginCore\\' => ''];
+// Fix autoload: src/ is now a proper subdirectory of the package root.
+// The Tests\ prefix is more specific and must be declared before PayplugPluginCore\ so that
+// PSR-4 resolves test classes to tests/ regardless of whether composer install runs with --no-dev.
+$data['autoload']['psr-4'] = [
+    'PayplugPluginCore\\Tests\\' => 'tests/',
+    'PayplugPluginCore\\'        => 'src/',
+];
+
+// Mirror in autoload-dev for tools that rely on it
+// $data['autoload-dev'] = ['psr-4' => ['PayplugPluginCore\\Tests\\' => 'tests/']];
 
 $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
 
