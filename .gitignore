@@ -37,5 +37,5 @@ vendor
 
 # PHPStan
 var/
-/
+payplug-core/
 .claude
