@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\tests\mock;
+namespace PayplugPluginCore\Tests\Mock;
 
 use Payplug\Resource\Payment;
 use PayplugPluginCore\Models\Entities\PaymentOutputDTO;
 
 class PaymentOutputDTOMock
 {
-    /** @var bool */
-    public $result;
-    /** @var string */
-    public $code;
-    /** @var string */
-    public $message;
-    /** @var object */
-    public $resource;
+    public bool $result;
+    public string $code;
+    public string $message;
+    public object $resource;
 
-    public static function get(?array $custom_props)
+    /**
+     * @param array<string, mixed>|null $custom_props
+     * @throws \Exception
+     */
+    public static function get(?array $custom_props): PaymentOutputDTO
     {
         // get default
         $payment_attributes = [
@@ -98,12 +98,19 @@ class PaymentOutputDTOMock
         ];
 
         // set custom props
-        foreach ($custom_props as $prop => $value) {
-            $props[$prop] = $value;
+        if ($custom_props !== null) {
+            foreach ($custom_props as $prop => $value) {
+                $props[$prop] = $value;
+            }
         }
 
         //
         $paymentOutputDTO = new PaymentOutputDTO();
-        return $paymentOutputDTO->hydrate($props);
+        $result = $paymentOutputDTO->hydrate($props);
+        if ($result === null) {
+            throw new \RuntimeException('PaymentOutputDTOMock failed to hydrate DTO.');
+        }
+
+        return $result;
     }
 }

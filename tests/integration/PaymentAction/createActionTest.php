@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace PayplugPluginCore\Tests\Integration\PaymentAction;
 
 use Mockery;
+use Mockery\MockInterface;
 use PayplugPluginCore\Actions\PaymentAction;
+use PayplugPluginCore\Models\Entities\PaymentInputDTO;
 use PayplugPluginCore\Tests\Mock\PaymentInputDTOMock;
 use PayplugPluginCore\Tests\Mock\PaymentMock;
 use PayplugPluginCore\Tests\Mock\PaymentOutputDTOMock;
@@ -16,8 +18,9 @@ use PHPUnit\Framework\TestCase;
  */
 class createActionTest extends TestCase
 {
-    private $action;
-    private $payment_api;
+    private PaymentAction&MockInterface $action;
+    private MockInterface $payment_api;
+    private PaymentInputDTO $default_payment_input_DTO;
 
     public function setUp(): void
     {
@@ -40,7 +43,7 @@ class createActionTest extends TestCase
 
     public function testWhenResourceCantBeCreated(): void
     {
-        $error_msg = 'An error occured during the process';
+        $error_msg = 'An error occurred during the process';
         $error_code = 500;
         $this->payment_api
             ->shouldReceive('create')

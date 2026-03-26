@@ -1,5 +1,10 @@
+includes:
+    - vendor/phpstan/phpstan-mockery/extension.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+
 parameters:
     level: 8
     phpVersion: 80400
     paths:
         - src
+        - tests

@@ -61,9 +61,6 @@ trait DependenciesLoader
 
     public function get_payment_gateway(): PaymentGatewayManager
     {
-        /** @var PaymentGatewayManager $gateway */
-        $gateway = $this->get_gateway('payment');
-
-        return $gateway;
+        return new PaymentGatewayManager();
     }
 }

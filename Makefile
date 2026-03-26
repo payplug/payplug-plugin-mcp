@@ -25,8 +25,17 @@ update:
 	$(PHP) composer update
 
 ## Quality
-test:
-	$(PHP) vendor/bin/phpunit
+test-unit:
+	$(PHP) vendor/bin/phpunit tests
+
+test-unit-inte:
+	$(PHP) vendor/bin/phpunit tests --group integration
+
+test-unit-units:
+	$(PHP) vendor/bin/phpunit tests --group units
+
+tu-dep:
+	$(PHP) vendor/bin/phpunit tests --display-phpunit-deprecations
 
 stan:
 	$(PHP) vendor/bin/phpstan analyse
@@ -50,7 +59,7 @@ debug:
 	$(PHP_DEBUG) bash
 
 ## CI (runs all checks)
-ci: stan lint test
+ci: stan cs-lint test-unit
 
 install: build update comp-install
 
