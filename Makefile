@@ -1,4 +1,4 @@
-.PHONY: build up down shell install update test stan lint fix rector debug
+.PHONY: build up down shell install update test stan lint fix debug release
 
 DC = docker compose
 PHP = $(DC) run --rm php
@@ -37,11 +37,13 @@ lint:
 fix:
 	$(PHP) vendor/bin/php-cs-fixer fix
 
-rector:
-	$(PHP) vendor/bin/rector process
-
 rector-dry:
 	$(PHP) vendor/bin/rector process --dry-run
+
+## Release (downgrade src/ to PHP 7.2 into release/)
+release:
+	rm -rf payplug-core && cp -r src payplug-core && cp -r tests payplug-core
+	$(PHP) vendor/bin/rector process
 
 ## Debug (Xdebug step-debug enabled)
 debug:
