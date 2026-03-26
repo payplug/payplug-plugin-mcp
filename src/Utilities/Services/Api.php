@@ -53,13 +53,15 @@ class Api
     {
         try {
             $response = [
-                'result'   => true,
+                'result'   => 'OK',
+                'message'  => 'OK',
                 'response' => \call_user_func_array($callback, $params),
-                'code'     => 200,
+                'code'     => 200, // not putting true here because it waits an HTTP code e.g : 200 => OK
             ];
         } catch (\Exception $e) {
             $response = [
                 'result'   => false,
+                'message'  => $e->getMessage(),
                 'response' => null,
                 'code'     => $e->getCode(),
             ];

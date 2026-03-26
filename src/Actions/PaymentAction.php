@@ -13,12 +13,18 @@ class PaymentAction
 {
     use DependenciesLoader;
 
+    public function __construct()
+    {
+        $this->allowed_gateways = ['payment'];
+        $this->allowed_services = ['api'];
+    }
+
     /**
      * @param PaymentInputDTO $payment_inputDTO
      *
-     * @throws \Exception
-     *
      * @return ?PaymentOutputDTO
+     *@throws \Exception
+     *
      */
     public function createAction(PaymentInputDTO $payment_inputDTO): ?PaymentOutputDTO
     {

@@ -4,32 +4,37 @@ declare(strict_types=1);
 
 namespace PayplugPluginCore\Tests\Units\Actions\PaymentAction;
 
+use Mockery\MockInterface;
+use PayplugPluginCore\Gateways\AbstractPaymentGateway;
+use PayplugPluginCore\Gateways\PaymentGatewayManager;
+use PayplugPluginCore\Models\Entities\PaymentInputDTO;
 use PayplugPluginCore\Tests\Mock\PaymentInputDTOMock;
 use PayplugPluginCore\Tests\Mock\PaymentMock;
 use PayplugPluginCore\Tests\Mock\PaymentOutputDTOMock;
 
 /**
- * @group unit
+ * @group units
  * @group action
  * @group payment_action
  */
 class createActionTest extends paymentActionBase
 {
-    private $api_service;
-    private $input_dto;
-    private $service_loader;
-    private $gateway_loader;
-    private $payment_gateway;
-    private $payment_attributes;
+    private MockInterface $api_service;
+    private PaymentInputDTO $input_dto;
+    private MockInterface $service_loader;
+    private MockInterface $gateway_loader;
+    private MockInterface $payment_gateway;
+
+    /** @var array<string, mixed> */
+    private array $payment_attributes = [];
 
     public function setUp(): void
     {
         parent::setUp();
         $this->input_dto = PaymentInputDTOMock::get([]);
 
-        $this->gateway_loader = \Mockery::mock('GatewayLoader');
-        $this->action->shouldReceive('get_gateway')
-            ->with('payment')
+        $this->gateway_loader = \Mockery::mock(PaymentGatewayManager::class);
+        $this->action->shouldReceive('get_payment_gateway')
             ->andReturn($this->gateway_loader);
 
         $this->service_loader = \Mockery::mock('ServiceLoader');
@@ -38,18 +43,20 @@ class createActionTest extends paymentActionBase
             ->andReturn($this->service_loader);
 
         $this->api_service = \Mockery::mock('ApiService');
-        $this->payment_gateway = \Mockery::mock('PaymentGateway');
+        $this->payment_gateway = \Mockery::mock(AbstractPaymentGateway::class);
 
+        $customer = $this->input_dto->getCustomer() ?? [];
+        $urls = $this->input_dto->getUrls() ?? [];
         $this->payment_attributes = [
             'amount' => $this->input_dto->getAmount(),
             'currency' => $this->input_dto->getCurrencyIsoCode(),
-            'billing' => $this->input_dto->getCustomer()['billing'],
-            'shipping' => $this->input_dto->getCustomer()['shipping'] + ['delivery_type' => 'BILLING'],
+            'billing' => $customer['billing'] ?? null,
+            'shipping' => ($customer['shipping'] ?? []) + ['delivery_type' => 'BILLING'],
             'hosted_payment' => [
-                'return_url' => $this->input_dto->getUrls()['return'],
-                'cancel_url' => $this->input_dto->getUrls()['cancel'],
+                'return_url' => $urls['return'] ?? null,
+                'cancel_url' => $urls['cancel'] ?? null,
             ],
-            'notification_url' => $this->input_dto->getUrls()['notification'],
+            'notification_url' => $urls['notification'] ?? null,
             'metadata' => $this->input_dto->getMetadata(),
             'allow_save_card' => false,
             'force_3ds' => false,
@@ -59,7 +66,7 @@ class createActionTest extends paymentActionBase
     public function testWhenGivenDTOIsInvalid(): void
     {
         $this->expectException(\TypeError::class);
-        $this->action->createAction(null);
+        new \ReflectionMethod($this->action, 'createAction')->invoke($this->action, null);
     }
 
     public function testWhenPaymentGatewayLoadingThrowsException(): void
@@ -185,8 +192,6 @@ class createActionTest extends paymentActionBase
             ->with($this->input_dto->getApiBearer())
             ->andReturn($this->api_service);
 
-        $error_code = 500;
-        $error_msg = 'An error occurred during payment creation.';
         $api_return = [
             'code' => 200,
             'message' => 'OK',

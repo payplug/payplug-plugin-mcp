@@ -8,7 +8,8 @@ use Payplug\Resource\Payment;
 
 class PaymentMock
 {
-    public static $payment_parameters = [
+    /** @var array<string, array<string, mixed>> */
+    public static array $payment_parameters = [
         'oneclick' => [
             'is_paid' => true,
             'paid_at' => 1614949567,
@@ -36,14 +37,21 @@ class PaymentMock
         ],
     ];
 
-    public static function getStandard($parameters = [])
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public static function getStandard(array $parameters = []): Payment
     {
         $resource = self::get($parameters);
 
         return Payment::fromAttributes($resource);
     }
 
-    public static function get($parameters)
+    /**
+     * @param array<string, mixed> $parameters
+     * @return array<string, mixed>
+     */
+    public static function get(array $parameters): array
     {
         $defaultConfiguration = [
             'id' => 'pay_azerty',

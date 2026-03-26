@@ -8,9 +8,9 @@ trait TestingTools
 {
     use FormatDataProvider;
 
-    private $payment_input_dto_mock;
-    private $payment_output_dto_mock;
-    private $payment_mock;
+    private ?object $payment_input_dto_mock = null;
+    private ?object $payment_output_dto_mock = null;
+    private ?object $payment_mock = null;
 
     public function get_mock(string $name = ''): object
     {

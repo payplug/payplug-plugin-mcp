@@ -11,7 +11,11 @@ class PaymentInputDTOMock
 {
     use TestingTools;
 
-    public static function get(?array $custom_props)
+    /**
+     * @param array<string, mixed>|null $custom_props
+     * @throws \Exception
+     */
+    public static function get(?array $custom_props): PaymentInputDTO
     {
         // get default
         $props = [
@@ -66,7 +70,12 @@ class PaymentInputDTOMock
         }
 
         //
-        $paymentInputDTO = new PaymentInputDto();
-        return $paymentInputDTO->hydrate($props);
+        $paymentInputDTO = new PaymentInputDTO();
+        $result = $paymentInputDTO->hydrate($props);
+        if ($result === null) {
+            throw new \RuntimeException('PaymentInputDTOMock failed to hydrate DTO.');
+        }
+
+        return $result;
     }
 }

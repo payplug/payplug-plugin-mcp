@@ -55,7 +55,7 @@ class PaymentInputDTO
                 continue;
             }
 
-            if (!\array_key_exists($key, $props) || $props[$key] === null) {
+            if (!\array_key_exists($key, $props) || null === $props[$key]) {
                 $this->resetProperties();
                 throw new Exception('PaymentInputDTO can\'t be hydrated, required field is invalid.');
             }
@@ -66,7 +66,7 @@ class PaymentInputDTO
         $this->setAmount((int) $props['amount']);
         $this->setCurrencyIsoCode((string) $props['currency_iso_code']);
         $this->setCustomer((array) $props['customer']);
-        $this->setReturnUrls((array) $props['urls']);
+        $this->setUrls((array) $props['urls']);
         $this->setMetadata((array) $props['metadata']);
         $this->setContext((array) $props['context']);
 
@@ -134,7 +134,7 @@ class PaymentInputDTO
     /**
      * @return array<string, string>|null
      */
-    public function getReturnUrls(): ?array
+    public function getUrls(): ?array
     {
         return $this->urls;
     }
@@ -196,7 +196,7 @@ class PaymentInputDTO
     /**
      * @param array<string, string> $urls
      */
-    public function setReturnUrls(array $urls): void
+    public function setUrls(array $urls): void
     {
         $this->urls = $urls;
     }
