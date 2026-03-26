@@ -49,10 +49,11 @@ cs-fix:
 rector-dry:
 	$(PHP) vendor/bin/rector process --dry-run
 
-## Release (downgrade src/ to PHP 7.2 into release/)
+## Release (downgrade src/ to PHP 7.2 into payplug-core/)
 release:
-	rm -rf payplug-core && cp -r src payplug-core && cp -r tests payplug-core
-	$(PHP) vendor/bin/rector process
+	rm -rf payplug-core && mkdir payplug-core && cp -r src payplug-core/ && cp -r tests payplug-core/
+	$(PHP) vendor/bin/rector process --config rector.php
+	$(PHP) php scripts/generate-release-composer.php
 
 ## Debug (Xdebug step-debug enabled)
 debug:
