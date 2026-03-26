@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 
+/**
+ * Release configuration: downgrades src/ to PHP 7.2 into the payplug-core/ directory.
+ *
+ * Workflow:
+ *   1. Copy src/ → payplug-core/  (done by the Makefile `release` target)
+ *   2. Run: vendor/bin/rector process
+ */
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/src',
-        __DIR__ . '/tests',
+        __DIR__ . '/payplug-core',
     ])
 
-    // Upgrade from PHP 7.2 → 8.4 (includes all rules up to 8.4 automatically)
-    ->withPhpSets(php84: true)
+    // Target PHP 7.2 — Rector applies all downgrade rules from current version down to 7.2
+    ->withDowngradeSets(php72: true)
 
-    // Safe automatic improvements: dead code, type coverage, code quality
-    // Kept at 0 for the migration pass — bump these in a dedicated quality PR
-    ->withDeadCodeLevel(0)
-    ->withTypeCoverageLevel(0)
-    ->withCodeQualityLevel(0)
-
-    // Skip vendor
     ->withSkip([
         __DIR__ . '/vendor',
     ]);
