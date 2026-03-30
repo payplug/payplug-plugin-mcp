@@ -160,7 +160,7 @@ class createActionTest extends paymentActionBase
         $api_return = [
             'code' => $error_code,
             'message' => $error_msg,
-            'response' => null,
+            'resource' => null,
             'result' => false,
         ];
         $this->api_service
@@ -195,7 +195,7 @@ class createActionTest extends paymentActionBase
         $api_return = [
             'code' => 200,
             'message' => 'OK',
-            'response' => PaymentMock::getStandard(),
+            'resource' => PaymentMock::getStandard(),
             'result' => true,
         ];
         $this->api_service
@@ -204,7 +204,7 @@ class createActionTest extends paymentActionBase
             ->andReturn($api_return);
         $this->assertEquals(
             PaymentOutputDTOMock::get([
-                'response' => PaymentMock::getStandard(),
+                'resource' => PaymentMock::getStandard(),
             ]),
             $this->action->createAction($this->input_dto)
         );

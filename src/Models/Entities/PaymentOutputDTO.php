@@ -4,20 +4,34 @@ declare(strict_types=1);
 
 namespace PayplugPluginCore\Models\Entities;
 
+use Payplug\Resource\Payment;
+
 class PaymentOutputDTO
 {
-    public ?bool $result = null;
+    /**
+     * @var bool|null
+     */
+    public $result;
 
-    public ?string $code = null;
+    /**
+     * @var string|null
+     */
+    public $code;
 
-    public ?string $message = null;
+    /**
+     * @var string|null
+     */
+    public $message;
 
-    public ?object $resource = null;
+    /**
+     * @var Payment|null
+     */
+    public $resource;
 
     /**
      * @var array<string, array{type: string, required: bool}>
      */
-    private array $definitions = [
+    private $definitions = [
         'result'   => ['type' => 'boolean', 'required' => true],
         'code'     => ['type' => 'string',  'required' => true],
         'message'  => ['type' => 'string',  'required' => false],
@@ -45,7 +59,7 @@ class PaymentOutputDTO
         $this->setResult((bool) $props['result']);
         $this->setCode((string) $props['code']);
         $this->setMessage(isset($props['message']) ? (string) $props['message'] : '');
-        $this->setResource($props['response']);
+        $this->setResource($props['resource']);
 
         return $this;
     }
@@ -83,7 +97,7 @@ class PaymentOutputDTO
         return $this->definitions;
     }
 
-    public function getResource(): ?object
+    public function getResource(): ?Payment
     {
         return $this->resource;
     }
@@ -105,9 +119,9 @@ class PaymentOutputDTO
         $this->message = $message;
     }
 
-    public function setResource(mixed $resource): void
+    public function setResource(?Payment $resource): void
     {
-        $this->resource = \is_object($resource) ? $resource : null;
+        $this->resource = $resource;
     }
 
     /**

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace PayplugPluginCore\Utilities\Services;
 
+use http\Exception\RuntimeException;
 use Payplug\Payment;
 use Payplug\Payplug;
 
 class Api
 {
-    private string $bearer_token;
+    private ?Payplug $payplug_api = null;
 
-    /** @var array{0: class-string<Payment>, 1: string} */
-    private const array PAYMENT_CREATE = [Payment::class, 'create'];
+    private string $bearer_token;
 
     /**
      * @param array<string, mixed> $datas
@@ -20,7 +20,26 @@ class Api
      */
     public function createPaymentResource(array $datas): array
     {
-        return $this->doRequest(self::PAYMENT_CREATE, $datas);
+        try {
+            if (null === $this->payplug_api) {
+                throw new RuntimeException('API Payplug must be initialized.');
+            }
+            $response = [
+                'code' => 200,
+                'message' => 'OK',
+                'resource' => Payment::create($datas, $this->payplug_api),
+                'result' => true,
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'resource' => null,
+                'result' => false,
+            ];
+        }
+
+        return $response;
     }
 
     public function getBearerToken(): string
@@ -46,37 +65,12 @@ class Api
     }
 
     /**
-     * @param array<string, mixed> $params
-     * @return array<string, mixed>
-     */
-    protected function doRequest(callable $callback, array $params): array
-    {
-        try {
-            $response = [
-                'result'   => 'OK',
-                'message'  => 'OK',
-                'response' => \call_user_func_array($callback, $params),
-                'code'     => 200, // not putting true here because it waits an HTTP code e.g : 200 => OK
-            ];
-        } catch (\Exception $e) {
-            $response = [
-                'result'   => false,
-                'message'  => $e->getMessage(),
-                'response' => null,
-                'code'     => $e->getCode(),
-            ];
-        }
-
-        return $response;
-    }
-
-    /**
      * @throws \Exception
      */
     private function initialize(): void
     {
         try {
-            Payplug::init([
+            $this->payplug_api = Payplug::init([
                 'secretKey'  => $this->getBearerToken(),
                 'apiVersion' => '2019-08-06',
             ]);
