@@ -54,7 +54,7 @@ class createActionTest extends TestCase
             'code' => $error_code,
             'message' => $error_msg,
             'result' => false,
-            'response' => null,
+            'resource' => null,
         ];
         $this->assertEquals(
             PaymentOutputDTOMock::get($error_output_props),
@@ -72,7 +72,7 @@ class createActionTest extends TestCase
             ->andReturn($resource);
 
         $success_output_props = [
-            'response' => $resource,
+            'resource' => $resource,
         ];
         $payment_output_DTO = PaymentOutputDTOMock::get($success_output_props);
         $return = $this->action->createAction($this->default_payment_input_DTO);
