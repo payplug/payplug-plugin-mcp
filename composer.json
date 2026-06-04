@@ -2,7 +2,6 @@
     "name": "payplug/payplug-plugin-core",
     "description": "Module core pour l'intégration Payplug.",
     "type": "library",
-    "version": "0.1.0",
     "license": "MIT",
     "authors": [
         {
