@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Integration\PaymentAction;
+namespace PayPlugPluginCore\Tests\Integration\PaymentAction;
 
 use Mockery;
 use Mockery\MockInterface;
-use PayplugPluginCore\Actions\PaymentAction;
-use PayplugPluginCore\Models\Entities\PaymentInputDTO;
-use PayplugPluginCore\Tests\Mock\PaymentInputDTOMock;
-use PayplugPluginCore\Tests\Mock\PaymentMock;
-use PayplugPluginCore\Tests\Mock\PaymentOutputDTOMock;
+use PayPlugPluginCore\Actions\PaymentAction;
+use PayPlugPluginCore\Models\Entities\PaymentInputDTO;
+use PayPlugPluginCore\Tests\Mock\PaymentInputDTOMock;
+use PayPlugPluginCore\Tests\Mock\PaymentMock;
+use PayPlugPluginCore\Tests\Mock\PaymentOutputDTOMock;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,9 +18,12 @@ use PHPUnit\Framework\TestCase;
  */
 class createActionTest extends TestCase
 {
-    private PaymentAction&MockInterface $action;
-    private MockInterface $payment_api;
-    private PaymentInputDTO $default_payment_input_DTO;
+    /** @var PaymentAction&MockInterface */
+    private $action;
+    /** @var MockInterface */
+    private $payment_api;
+    /** @var PaymentInputDTO */
+    private $default_payment_input_DTO;
 
     public function setUp(): void
     {
@@ -64,7 +67,6 @@ class createActionTest extends TestCase
 
     public function testWhenResourceIsCreated(): void
     {
-
         $resource = PaymentMock::getStandard();
         $this->payment_api
             ->shouldReceive('create')

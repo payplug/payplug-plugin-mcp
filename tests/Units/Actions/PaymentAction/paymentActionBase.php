@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Units\Actions\PaymentAction;
+namespace PayPlugPluginCore\Tests\Units\Actions\PaymentAction;
 
 use Mockery;
-use PayplugPluginCore\Actions\PaymentAction;
+use PayPlugPluginCore\Actions\PaymentAction;
 use PHPUnit\Framework\TestCase;
 
 abstract class paymentActionBase extends TestCase
 {
-    protected PaymentAction&\Mockery\MockInterface $action;
+    /** @var PaymentAction&\Mockery\MockInterface */
+    protected $action;
 
     public function setUp(): void
     {

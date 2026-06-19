@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Units\Gateways\Payment\StandardPaymentGateway;
+namespace PayPlugPluginCore\Tests\Units\Gateways\Payment\StandardPaymentGateway;
 
 use Mockery;
-use PayplugPluginCore\Gateways\Payment\StandardPaymentGateway;
+use PayPlugPluginCore\Gateways\Payment\StandardPaymentGateway;
 use PHPUnit\Framework\TestCase;
 
 abstract class standardPaymentGatewayBase extends TestCase
 {
-    protected StandardPaymentGateway&\Mockery\MockInterface $gateway;
+    /** @var StandardPaymentGateway&\Mockery\MockInterface */
+    protected $gateway;
 
     public function setUp(): void
     {

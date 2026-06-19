@@ -2,18 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Mock;
+namespace PayPlugPluginCore\Tests\Mock;
 
 use Payplug\Resource\Payment;
-use PayplugPluginCore\Models\Entities\PaymentOutputDTO;
+use PayPlugPluginCore\Models\Entities\PaymentOutputDTO;
 
 class PaymentOutputDTOMock
 {
-    public bool $result;
-    public string $code;
-    public string $message;
-    public object $resource;
-
     /**
      * @param array<string, mixed>|null $custom_props
      * @throws \Exception

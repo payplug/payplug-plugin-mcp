@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Gateways\Payment;
+namespace PayPlugPluginCore\Gateways\Payment;
 
-use PayplugPluginCore\Gateways\AbstractPaymentGateway;
-use PayplugPluginCore\Models\Entities\PaymentInputDTO;
+use PayPlugPluginCore\Gateways\AbstractPaymentGateway;
+use PayPlugPluginCore\Models\Entities\PaymentInputDTO;
 
 class EmailLinkPaymentGateway extends AbstractPaymentGateway
 {
