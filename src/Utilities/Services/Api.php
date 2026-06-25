@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Utilities\Services;
+namespace PayPlugPluginCore\Utilities\Services;
 
-use http\Exception\RuntimeException;
 use Payplug\Payment;
 use Payplug\Payplug;
+use Payplug\Refund;
 
 class Api
 {
-    private ?Payplug $payplug_api = null;
+    /** @var Payplug|null */
+    private $payplug_api = null;
 
-    private string $bearer_token;
+    /** @var string */
+    private $bearer_token;
 
     /**
      * @param array<string, mixed> $datas
@@ -22,20 +24,49 @@ class Api
     {
         try {
             if (null === $this->payplug_api) {
-                throw new RuntimeException('API Payplug must be initialized.');
+                throw new \RuntimeException('API Payplug must be initialized.');
             }
             $response = [
-                'code' => 200,
-                'message' => 'OK',
+                'code'     => 200,
+                'message'  => 'OK',
                 'resource' => Payment::create($datas, $this->payplug_api),
-                'result' => true,
+                'result'   => true,
             ];
         } catch (\Exception $e) {
             $response = [
-                'code' => $e->getCode(),
-                'message' => $e->getMessage(),
+                'code'     => $e->getCode(),
+                'message'  => $e->getMessage(),
                 'resource' => null,
-                'result' => false,
+                'result'   => false,
+            ];
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $resource_id
+     * @param array<string, mixed> $datas
+     * @return array<string, mixed>
+     */
+    public function refundPaymentResource(string $resource_id, array $datas): array
+    {
+        try {
+            if (null === $this->payplug_api) {
+                throw new \RuntimeException('API Payplug must be initialized.');
+            }
+            $response = [
+                'code'     => 200,
+                'message'  => 'OK',
+                'resource' => Refund::create($resource_id, $datas, $this->payplug_api),
+                'result'   => true,
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'code'     => $e->getCode(),
+                'message'  => $e->getMessage(),
+                'resource' => null,
+                'result'   => false,
             ];
         }
 
@@ -54,7 +85,7 @@ class Api
 
     /**
      * @return $this
-     * @throws \Payplug\Exception\ConfigurationException
+     * @throws \Exception
      */
     public function load(string $bearer_token): self
     {
@@ -62,6 +93,11 @@ class Api
         $this->initialize();
 
         return $this;
+    }
+
+    public function isLoaded(): bool
+    {
+        return $this->payplug_api !== null;
     }
 
     /**

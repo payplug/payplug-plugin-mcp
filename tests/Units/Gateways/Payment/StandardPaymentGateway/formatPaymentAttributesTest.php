@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Units\Gateways\Payment\StandardPaymentGateway;
+namespace PayPlugPluginCore\Tests\Units\Gateways\Payment\StandardPaymentGateway;
 
-use PayplugPluginCore\Tests\Mock\PaymentInputDTOMock;
+use PayPlugPluginCore\Tests\Mock\PaymentInputDTOMock;
 
 /**
  * @group unit
@@ -25,7 +25,7 @@ class formatPaymentAttributesTest extends standardPaymentGatewayBase
     public function testWhenGivenDTOIsInvalid(): void
     {
         $this->expectException(\TypeError::class);
-        new \ReflectionMethod($this->gateway, 'formatPaymentAttributes')->invoke($this->gateway, null);
+        (new \ReflectionMethod($this->gateway, 'formatPaymentAttributes'))->invoke($this->gateway, null);
     }
 
     public function testWhenDefaultAttributesCanBeSet(): void
@@ -40,6 +40,7 @@ class formatPaymentAttributesTest extends standardPaymentGatewayBase
         $this->gateway->formatPaymentAttributes(PaymentInputDTOMock::get([]));
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public static function StandardPaymentRequiredContext(): \Generator
     {
         yield ['is_deferred'];

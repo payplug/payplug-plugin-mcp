@@ -10,43 +10,39 @@
     }
   ],
   "require": {
-    "php": ">=8.1",
-    "captainhook/captainhook": "^5.28",
+    "php": "^7.1",
     "payplug/payplug-php": "^4.0"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.0",
-    "mockery/mockery": "^1.6",
-    "phpstan/phpstan": "^2.0",
+    "captainhook/captainhook": "^4.0",
+    "friendsofphp/php-cs-fixer": "^2.0",
+    "mockery/mockery": "^1.3",
+    "phpstan/phpstan": "^0.12",
     "phpstan/phpstan-mockery": "*",
     "phpstan/phpstan-phpunit": "*",
-    "phpunit/phpunit": "^10.0",
-    "rector/rector": "^2.0"
+    "phpunit/phpunit": "^7.5"
   },
   "autoload": {
     "psr-4": {
-      "PayplugPluginCore\\": "src/"
+      "PayPlugPluginCore\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "PayplugPluginCore\\Tests\\": "tests/"
+      "PayPlugPluginCore\\Tests\\": "tests/"
     }
   },
   "scripts": {
-    "post-install-cmd": "vendor/bin/captainhook install --force --skip-existing",
-    "post-update-cmd": "vendor/bin/captainhook install --force --skip-existing",
+    "post-install-cmd": "vendor/bin/captainhook install --force",
+    "post-update-cmd": "vendor/bin/captainhook install --force",
     "test": "vendor/bin/phpunit tests",
     "test-unit": "vendor/bin/phpunit tests --group unit",
     "test-inte": "vendor/bin/phpunit tests --group integration",
     "stan": "vendor/bin/phpstan analyse --configuration=phpstan.neon",
     "cs-lint": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff",
     "cs-fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
-    "rector": "vendor/bin/rector process",
-    "rector-dry": "vendor/bin/rector process --dry-run",
     "release": [
       "rm -rf payplug-core && mkdir payplug-core && cp -r src payplug-core/ && cp -r tests payplug-core/",
-      "vendor/bin/rector process --config rector.php",
       "php scripts/generate-release-composer.php"
     ]
   },

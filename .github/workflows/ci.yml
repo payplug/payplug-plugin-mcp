@@ -20,91 +20,24 @@ jobs:
     if: github.ref_type != 'tag' && github.event.action != 'closed'
     uses: payplug/template-ci/.github/workflows/php-quality.yml@main
     with:
-      php-version: '8.4'
+      php-version: '7.1'
 
   # -----------------------------------------------------------------------
-  # 2. DOWNGRADE — transpile src/ + tests/ to PHP 7.2
-  #    Runs on: push to feature branch  |  PR opened/updated → develop
-  # -----------------------------------------------------------------------
-  downgrade:
-    if: github.ref_type != 'tag' && github.event.action != 'closed'
-    needs: quality
-    uses: payplug/template-ci/.github/workflows/php-downgrade.yml@main
-    with:
-      php-version: '8.4'
-      artifact-name: 'payplug-core-php72'
-      artifact-retention-days: 7
-
-  # -----------------------------------------------------------------------
-  # 3. VALIDATE — install the downgraded package under PHP 7.2
-  #    Runs on: push to feature branch  |  PR opened/updated → develop
-  # -----------------------------------------------------------------------
-  validate:
-    if: github.ref_type != 'tag' && github.event.action != 'closed'
-    needs: downgrade
-    uses: payplug/template-ci/.github/workflows/php-validate.yml@main
-    with:
-      php-version: '7.2'
-      artifact-name: 'payplug-core-php72'
-
-  # -----------------------------------------------------------------------
-  # 4. TEST — run unit tests against the downgraded PHP 7.2 code
-  #    Runs on: push to feature branch  |  PR opened/updated → develop
-  # -----------------------------------------------------------------------
-  test-php72:
-    if: github.ref_type != 'tag' && github.event.action != 'closed'
-    needs: validate
-    uses: payplug/template-ci/.github/workflows/php-test-php72.yml@main
-    with:
-      php-version: '7.2'
-      artifact-name: 'payplug-core-php72'
-      test-namespace: 'PayplugPluginCore\tests\'
-
-  # -----------------------------------------------------------------------
-  # 5. PUSH-DIST — push transpiled code to dist/{php-target}/{branch}
-  #    Runs in parallel with validate, as soon as downgrade succeeds.
-  #    On feature branch push → dist/php72/feature/xxxx
-  #    On push to develop    → dist/php72/develop
-  # -----------------------------------------------------------------------
-  push-dist:
-    if: github.ref_type != 'tag' && github.event.action != 'closed'
-    needs: validate
-    permissions:
-      contents: write
-    uses: payplug/template-ci/.github/workflows/php72-push-dist.yml@main
-    with:
-      artifact-name: 'payplug-core-php72'
-      source-branch: ${{ github.head_ref || github.ref_name }}
-      php-target: 'php72'
-
-  # -----------------------------------------------------------------------
-  # 6. PACKAGE — zip and store the artifact on PR merged → develop
+  # 2. PACKAGE — zip and store the artifact on PR merged → develop
   # -----------------------------------------------------------------------
   package:
     if: github.ref_type != 'tag' && github.event.action != 'closed'
     uses: payplug/template-ci/.github/workflows/php-package.yml@main
     with:
-      php-version: '8.4'
-      zip-prefix: 'payplug-plugin-core-php72'
+      php-version: '7.1'
+      zip-prefix: 'payplug-plugin-core-php71'
 
   # -----------------------------------------------------------------------
-  # 7. CLEANUP-DIST — delete dist/php72/feature/xxxx when PR is merged
-  # -----------------------------------------------------------------------
-  cleanup-dist:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-    permissions:
-      contents: write
-    uses: payplug/template-ci/.github/workflows/php72-delete-dist.yml@main
-    with:
-      source-branch: ${{ github.head_ref }}
-      php-target: 'php72'
-
-  # -----------------------------------------------------------------------
-  # 8. RELEASE — create a GitHub Release from a tag on main
+  # 3. RELEASE — create a GitHub Release from a tag on main
   # -----------------------------------------------------------------------
   release:
     if: github.event_name == 'push' && github.ref_type == 'tag'
     uses: payplug/template-ci/.github/workflows/php-release.yml@main
     with:
-      php-version: '8.4'
-      zip-prefix: 'payplug-plugin-core-php72'
+      php-version: '7.1'
+      zip-prefix: 'payplug-plugin-core-php71'

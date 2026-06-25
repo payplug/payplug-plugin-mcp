@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Traits;
+namespace PayPlugPluginCore\Tests\Traits;
 
 trait FormatDataProvider
 {
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidArrayFormatDataProvider(): \Generator
     {
         yield [42];
@@ -17,6 +18,7 @@ trait FormatDataProvider
         yield ['lorem ipsum'];
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidBoolFormatDataProvider(): \Generator
     {
         yield ['lorem Ipsum'];
@@ -28,6 +30,7 @@ trait FormatDataProvider
         yield [null];
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidIntegerFormatDataProvider(): \Generator
     {
         yield [null];
@@ -39,6 +42,7 @@ trait FormatDataProvider
         yield ['lorem ipsum'];
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidFloatFormatDataProvider(): \Generator
     {
         yield [null];
@@ -52,6 +56,7 @@ trait FormatDataProvider
         yield [42];
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidNumericFormatDataProvider(): \Generator
     {
         yield [null];
@@ -65,6 +70,7 @@ trait FormatDataProvider
         yield ['123abc'];
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidJSONFormatDataProvider(): \Generator
     {
         yield [''];
@@ -76,6 +82,7 @@ trait FormatDataProvider
         yield ['{{}}'];
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidObjectFormatDataProvider(): \Generator
     {
         yield [42];
@@ -87,6 +94,7 @@ trait FormatDataProvider
         yield ['lorem ipsum'];
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidStringFormatDataProvider(): \Generator
     {
         yield [42];
@@ -98,6 +106,7 @@ trait FormatDataProvider
         yield [null];
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidEmailFormatDataProvider(): \Generator
     {
         yield ['@test.com'];
@@ -107,6 +116,7 @@ trait FormatDataProvider
         yield ['emailtest.com'];
     }
 
+    /** @return \Generator<int, array<mixed>, mixed, void> */
     public function invalidPhoneFormatDataProvider(): \Generator
     {
         yield [42];
