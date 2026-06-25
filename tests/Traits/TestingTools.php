@@ -2,17 +2,25 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Traits;
+namespace PayPlugPluginCore\Tests\Traits;
 
 trait TestingTools
 {
     use FormatDataProvider;
 
-    private ?object $payment_input_dto_mock = null;
-    private ?object $payment_output_dto_mock = null;
-    private ?object $payment_mock = null;
+    /** @var object|null */
+    private $payment_input_dto_mock = null;
+    /** @var object|null */
+    private $payment_output_dto_mock = null;
+    /** @var object|null */
+    private $payment_mock = null;
 
-    public function get_mock(string $name = ''): object
+    /**
+     * @param string $name
+     * @return object
+     * @throws \Exception
+     */
+    public function get_mock(string $name = '')
     {
         if (empty($name)) {
             throw new \Exception('Invalid parameter, $name given should be a non empty string.');
@@ -22,7 +30,7 @@ trait TestingTools
             return $this->{$name};
         }
 
-        $mock = '\\PayplugPluginCore\\Tests\\Mock\\' . str_replace('_', '', ucwords($name, '_')) . 'Mock';
+        $mock = '\\PayPlugPluginCore\\Tests\\Mock\\' . str_replace('_', '', ucwords($name, '_')) . 'Mock';
         if (!class_exists($mock)) {
             throw new \Exception('Mock can\'t be found. Given: ' . $mock);
         }

@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Units\Actions\PaymentAction;
+namespace PayPlugPluginCore\Tests\Units\Actions\PaymentAction;
 
 use Mockery\MockInterface;
-use PayplugPluginCore\Gateways\AbstractPaymentGateway;
-use PayplugPluginCore\Gateways\PaymentGatewayManager;
-use PayplugPluginCore\Models\Entities\PaymentInputDTO;
-use PayplugPluginCore\Tests\Mock\PaymentInputDTOMock;
-use PayplugPluginCore\Tests\Mock\PaymentMock;
-use PayplugPluginCore\Tests\Mock\PaymentOutputDTOMock;
+use PayPlugPluginCore\Gateways\AbstractPaymentGateway;
+use PayPlugPluginCore\Gateways\PaymentGatewayManager;
+use PayPlugPluginCore\Models\Entities\PaymentInputDTO;
+use PayPlugPluginCore\Tests\Mock\PaymentInputDTOMock;
+use PayPlugPluginCore\Tests\Mock\PaymentMock;
+use PayPlugPluginCore\Tests\Mock\PaymentOutputDTOMock;
+use PayPlugPluginCore\Utilities\Services\Api;
 
 /**
  * @group units
@@ -19,14 +20,19 @@ use PayplugPluginCore\Tests\Mock\PaymentOutputDTOMock;
  */
 class createActionTest extends paymentActionBase
 {
-    private MockInterface $api_service;
-    private PaymentInputDTO $input_dto;
-    private MockInterface $service_loader;
-    private MockInterface $gateway_loader;
-    private MockInterface $payment_gateway;
+    /** @var MockInterface */
+    private $api_service;
+    /** @var PaymentInputDTO */
+    private $input_dto;
+    /** @var MockInterface */
+    private $api;
+    /** @var MockInterface */
+    private $gateway_loader;
+    /** @var MockInterface */
+    private $payment_gateway;
 
     /** @var array<string, mixed> */
-    private array $payment_attributes = [];
+    private $payment_attributes = [];
 
     public function setUp(): void
     {
@@ -37,12 +43,11 @@ class createActionTest extends paymentActionBase
         $this->action->shouldReceive('get_payment_gateway')
             ->andReturn($this->gateway_loader);
 
-        $this->service_loader = \Mockery::mock('ServiceLoader');
-        $this->action->shouldReceive('get_service')
-            ->with('api')
-            ->andReturn($this->service_loader);
+        $this->api = \Mockery::mock(Api::class);
+        $this->action->shouldReceive('get_api')
+            ->andReturn($this->api);
 
-        $this->api_service = \Mockery::mock('ApiService');
+        $this->api_service = \Mockery::mock(Api::class);
         $this->payment_gateway = \Mockery::mock(AbstractPaymentGateway::class);
 
         $customer = $this->input_dto->getCustomer() ?? [];
@@ -66,7 +71,7 @@ class createActionTest extends paymentActionBase
     public function testWhenGivenDTOIsInvalid(): void
     {
         $this->expectException(\TypeError::class);
-        new \ReflectionMethod($this->action, 'createAction')->invoke($this->action, null);
+        (new \ReflectionMethod($this->action, 'createAction'))->invoke($this->action, null);
     }
 
     public function testWhenPaymentGatewayLoadingThrowsException(): void
@@ -79,7 +84,7 @@ class createActionTest extends paymentActionBase
             ->andThrow(new \Exception($exception_msg));
 
         // Le flux doit s'arrêter avant tout appel API
-        $this->action->shouldNotReceive('get_service');
+        $this->action->shouldNotReceive('get_api');
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage($exception_msg);
@@ -102,7 +107,7 @@ class createActionTest extends paymentActionBase
             ->andThrow(new \Exception($exception_msg));
 
         // Le flux doit s'arrêter avant tout appel API
-        $this->action->shouldNotReceive('get_service');
+        $this->action->shouldNotReceive('get_api');
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage($exception_msg);
@@ -124,7 +129,7 @@ class createActionTest extends paymentActionBase
             ->andReturn($this->payment_attributes);
 
         $exception_msg = 'Payplug API can\'t be initialized.';
-        $this->service_loader
+        $this->api
             ->shouldReceive('load')
             ->once()
             ->with($this->input_dto->getApiBearer())
@@ -149,7 +154,7 @@ class createActionTest extends paymentActionBase
             ->once()
             ->andReturn($this->payment_attributes);
 
-        $this->service_loader
+        $this->api
             ->shouldReceive('load')
             ->once()
             ->with($this->input_dto->getApiBearer())
@@ -186,7 +191,7 @@ class createActionTest extends paymentActionBase
             ->once()
             ->andReturn($this->payment_attributes);
 
-        $this->service_loader
+        $this->api
             ->shouldReceive('load')
             ->once()
             ->with($this->input_dto->getApiBearer())

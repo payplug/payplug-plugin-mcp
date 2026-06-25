@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Units\Gateways;
+namespace PayPlugPluginCore\Tests\Units\Gateways;
 
-use PayplugPluginCore\Models\Entities\PaymentInputDTO;
+use PayPlugPluginCore\Models\Entities\PaymentInputDTO;
 
 class PaymentGateway
 {
-    protected string $id;
+    /** @var string */
+    protected $id;
     /** @var array<string, mixed> */
-    protected array $expected_context;
+    protected $expected_context;
 
     /**
      * @param string $payment_gateway_name
@@ -23,7 +24,7 @@ class PaymentGateway
             throw new \Exception('Invalid parameter, $payment_gateway_name given should be a non empty string.');
         }
 
-        $payment_gateway_path = '\PayplugPluginCore\gateways\payment\\'
+        $payment_gateway_path = '\PayPlugPluginCore\Gateways\Payment\\'
             . str_replace('_', '', ucwords($payment_gateway_name, '_'))
             . 'PaymentGateway';
         if (!class_exists($payment_gateway_path)) {

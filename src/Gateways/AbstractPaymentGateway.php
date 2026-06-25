@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Gateways;
+namespace PayPlugPluginCore\Gateways;
 
-use PayplugPluginCore\Models\Entities\PaymentInputDTO;
+use PayPlugPluginCore\Models\Entities\PaymentInputDTO;
 
 abstract class AbstractPaymentGateway
 {
-    protected string $id;
+    /** @var string */
+    protected $id;
 
     /** @var array<int, string> */
-    protected array $expected_context;
+    protected $expected_context;
 
     /**
      * @return array<string, mixed>

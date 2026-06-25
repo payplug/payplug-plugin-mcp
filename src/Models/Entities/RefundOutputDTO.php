@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PayPlugPluginCore\Models\Entities;
 
-use Payplug\Resource\Payment;
+use Payplug\Resource\Refund;
 
-class PaymentOutputDTO
+class RefundOutputDTO
 {
     /**
      * @var bool|null
@@ -24,7 +24,7 @@ class PaymentOutputDTO
     public $message;
 
     /**
-     * @var Payment|null
+     * @var Refund|null
      */
     public $resource;
 
@@ -52,7 +52,7 @@ class PaymentOutputDTO
 
             if (!\array_key_exists($key, $props) || null === $props[$key]) {
                 $this->resetProperties();
-                throw new \Exception('PaymentOutputDTO can\'t be hydrated, required field is invalid.');
+                throw new \Exception('RefundOutputDTO can\'t be hydrated, required field is invalid.');
             }
         }
 
@@ -97,7 +97,7 @@ class PaymentOutputDTO
         return $this->definitions;
     }
 
-    public function getResource(): ?Payment
+    public function getResource(): ?Refund
     {
         return $this->resource;
     }
@@ -120,7 +120,7 @@ class PaymentOutputDTO
     }
 
     /**
-     * @param Payment|null $resource
+     * @param Refund|null $resource
      */
     public function setResource($resource): void
     {

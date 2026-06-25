@@ -10,15 +10,16 @@ $finder = PhpCsFixer\Finder::create()
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PSR12' => true,
-        '@PHP84Migration' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'no_unused_imports' => true,
-        'ordered_imports' => ['sort_algorithm' => 'alpha'],
-        'single_quote' => true,
-        'trailing_comma_in_multiline' => true,
-        'declare_strict_types' => true,
-        'void_return' => true,
-        'native_function_invocation' => ['include' => ['@compiler_optimized'], 'scope' => 'namespaced'],
+        '@PSR12'                            => true,
+        '@PHP71Migration'                   => true,
+        'array_syntax'                      => ['syntax' => 'short'],
+        'no_unused_imports'                 => true,
+        'ordered_imports'                   => ['sort_algorithm' => 'alpha'],
+        'single_quote'                      => true,
+        // php-cs-fixer 2.x rule name (renamed to trailing_comma_in_multiline in 3.x)
+        'trailing_comma_in_multiline_array' => true,
+        'declare_strict_types'              => true,
+        'void_return'                       => true,
+        'native_function_invocation'        => ['include' => ['@compiler_optimized'], 'scope' => 'namespaced'],
     ])
     ->setFinder($finder);

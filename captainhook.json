@@ -13,10 +13,8 @@
     "pre-commit": {
       "actions": [
           {
-              "action": "\\CaptainHook\\App\\Hook\\Branch\\Action\\EnsureNaming",
-              "options": {
-                  "regex": "/^(feature|fix|hotfix|refactor|release)\\/(PRE|MAG|SYL|SMP)-\\d+(-[a-z0-9]+)*$/"
-              }
+              "action": "sh scripts/check-branch-name.sh",
+              "options": {}
           },
           {
               "action": "vendor/bin/phpstan analyse --configuration=phpstan.neon",

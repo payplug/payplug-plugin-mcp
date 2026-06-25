@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Tests\Mock;
+namespace PayPlugPluginCore\Tests\Mock;
 
 use Payplug\Resource\Payment;
 
 class PaymentMock
 {
     /** @var array<string, array<string, mixed>> */
-    public static array $payment_parameters = [
+    public static $payment_parameters = [
         'oneclick' => [
             'is_paid' => true,
             'paid_at' => 1614949567,

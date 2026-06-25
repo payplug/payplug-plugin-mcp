@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Gateways;
+namespace PayPlugPluginCore\Gateways;
 
 class PaymentGatewayManager
 {
@@ -15,7 +15,7 @@ class PaymentGatewayManager
             throw new \Exception('Invalid parameter, $payment_method_name given should be a non empty string.');
         }
 
-        $class = '\PayplugPluginCore\Gateways\Payment\\'
+        $class = '\PayPlugPluginCore\Gateways\Payment\\'
             . str_replace('_', '', ucwords($payment_method_name, '_'))
             . 'PaymentGateway';
 

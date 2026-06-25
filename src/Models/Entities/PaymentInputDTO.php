@@ -2,44 +2,48 @@
 
 declare(strict_types=1);
 
-namespace PayplugPluginCore\Models\Entities;
+namespace PayPlugPluginCore\Models\Entities;
 
 use Exception;
 
 class PaymentInputDTO
 {
-    public ?string $api_bearer = null;
+    /** @var string|null */
+    public $api_bearer = null;
 
-    public ?string $payment_method = null;
+    /** @var string|null */
+    public $payment_method = null;
 
-    public ?int $amount = null;
+    /** @var int|null */
+    public $amount = null;
 
-    public ?string $currency_iso_code = null;
+    /** @var string|null */
+    public $currency_iso_code = null;
 
     /** @var array<string, mixed>|null */
-    public ?array $customer = null; // ['billing' => [...], 'shipping' => [...], 'identifier' => ...]
+    public $customer = null; // ['billing' => [...], 'shipping' => [...], 'identifier' => ...]
 
     /** @var array<string, string>|null */
-    public ?array $urls = null; // ['return' => ..., 'cancel' => ..., 'notification' => ...]
+    public $urls = null; // ['return' => ..., 'cancel' => ..., 'notification' => ...]
 
     /** @var array<string, mixed>|null */
-    public ?array $metadata = null;
+    public $metadata = null;
 
     /** @var array<string, mixed>|null */
-    public ?array $context = null;
+    public $context = null;
 
     /**
      * @var array<string, array{type: string, required: bool}>
      */
-    private array $definitions = [
-        'api_bearer'       => ['type' => 'string', 'required' => true],
-        'payment_method'   => ['type' => 'string', 'required' => true],
-        'amount'           => ['type' => 'int',    'required' => true],
+    private $definitions = [
+        'api_bearer'        => ['type' => 'string', 'required' => true],
+        'payment_method'    => ['type' => 'string', 'required' => true],
+        'amount'            => ['type' => 'int',    'required' => true],
         'currency_iso_code' => ['type' => 'string', 'required' => true],
-        'customer'         => ['type' => 'array',  'required' => true],
-        'urls'             => ['type' => 'array',  'required' => true],
-        'metadata'         => ['type' => 'array',  'required' => false],
-        'context'          => ['type' => 'array',  'required' => false],
+        'customer'          => ['type' => 'array',  'required' => true],
+        'urls'              => ['type' => 'array',  'required' => true],
+        'metadata'          => ['type' => 'array',  'required' => false],
+        'context'           => ['type' => 'array',  'required' => false],
     ];
 
     /**
@@ -67,8 +71,8 @@ class PaymentInputDTO
         $this->setCurrencyIsoCode((string) $props['currency_iso_code']);
         $this->setCustomer((array) $props['customer']);
         $this->setUrls((array) $props['urls']);
-        $this->setMetadata((array) $props['metadata']);
-        $this->setContext((array) $props['context']);
+        $this->setMetadata(isset($props['metadata']) ? (array) $props['metadata'] : []);
+        $this->setContext(isset($props['context']) ? (array) $props['context'] : []);
 
         return $this;
     }
@@ -204,9 +208,10 @@ class PaymentInputDTO
     /**
      * @param array<string, mixed> $props
      * @return self|null
+     * @throws Exception
      */
     public static function create(array $props): ?self
     {
-        return new self()->hydrate($props);
+        return (new self())->hydrate($props);
     }
 }

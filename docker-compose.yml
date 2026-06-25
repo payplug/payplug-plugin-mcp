@@ -8,7 +8,8 @@ services:
       - composer-cache:/root/.composer/cache
     working_dir: /app
     environment:
-      XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+      # Xdebug 2.x: pass XDEBUG_CONFIG="remote_enable=1 remote_autostart=1" to enable step-debug
+      XDEBUG_CONFIG: "${XDEBUG_CONFIG:-}"
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
