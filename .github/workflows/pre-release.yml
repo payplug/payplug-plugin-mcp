@@ -1,0 +1,17 @@
+name: Release — RC
+
+'on':
+    push:
+        tags:
+            - '*.*.*-rc*'
+
+jobs:
+    quality:
+        uses: payplug/template-ci/.github/workflows/php-quality.yml@main
+        with:
+            php-version: '7.4'
+
+    github-release:
+        needs: quality
+        uses: payplug/template-ci/.github/workflows/github_release_rc.yml@main
+        secrets: inherit

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Units\Actions\PaymentAction;
+namespace PayPlugPluginMcp\Tests\Units\Actions\PaymentAction;
 
 use Mockery\MockInterface;
-use PayPlugPluginCore\Gateways\AbstractPaymentGateway;
-use PayPlugPluginCore\Gateways\PaymentGatewayManager;
-use PayPlugPluginCore\Models\Entities\PaymentInputDTO;
-use PayPlugPluginCore\Tests\Mock\PaymentInputDTOMock;
-use PayPlugPluginCore\Tests\Mock\PaymentMock;
-use PayPlugPluginCore\Tests\Mock\PaymentOutputDTOMock;
-use PayPlugPluginCore\Utilities\Services\Api;
+use PayPlugPluginMcp\Gateways\AbstractPaymentGateway;
+use PayPlugPluginMcp\Gateways\PaymentGatewayManager;
+use PayPlugPluginMcp\Models\Entities\PaymentInputDTO;
+use PayPlugPluginMcp\Tests\Mock\PaymentInputDTOMock;
+use PayPlugPluginMcp\Tests\Mock\PaymentMock;
+use PayPlugPluginMcp\Tests\Mock\PaymentOutputDTOMock;
+use PayPlugPluginMcp\Utilities\Services\Api;
 
 /**
  * @group units

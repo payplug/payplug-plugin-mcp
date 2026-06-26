@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Mock;
+namespace PayPlugPluginMcp\Tests\Mock;
 
-use PayPlugPluginCore\Models\Entities\PaymentInputDTO;
-use PayPlugPluginCore\Tests\Traits\TestingTools;
+use PayPlugPluginMcp\Models\Entities\PaymentInputDTO;
+use PayPlugPluginMcp\Tests\Traits\TestingTools;
 
 class PaymentInputDTOMock
 {

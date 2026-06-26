@@ -4,7 +4,7 @@
 Module core for Payplug integration. Enables management of payments, merchants, and notifications via the Payplug API.
 
 ## Requirements
-- PHP 7.2 or higher
+- PHP 7.1 or higher
 - Composer
 - Payplug PHP SDK (vendor payplug/payplug-php)
 
@@ -106,12 +106,17 @@ Module core for Payplug integration. Enables management of payments, merchants, 
 ## Quick start:
 
 ```bash
-composer install        # Hooks are installed automatically
-composer cs:fix         # Manual code formatting
-composer hooks:install  # Reinstall hooks if needed
-composer hooks:install  # Reinstall hooks if needed
+make install        # Build Docker image, install dependencies and git hooks
 
-composer phpunit:unit   # Run only unitary phpUnit tests  
-composer phpunit:inte   # Run only integration phpUnit tests  
-composer phpunit:all    # Run all phpUnit tests
+make cs-fix         # Fix code style
+make cs-lint        # Check code style (dry-run)
+make stan           # Run PHPStan static analysis
+
+make test-unit      # Run all PHPUnit tests
+make test-unit-units  # Run unit tests only
+make test-unit-inte   # Run integration tests only
+
+make ci             # Run all checks (stan + cs-lint + tests)
+
+make debug          # Open a shell with Xdebug step-debug enabled
 ```

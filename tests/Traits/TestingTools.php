@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Traits;
+namespace PayPlugPluginMcp\Tests\Traits;
 
 trait TestingTools
 {
@@ -30,7 +30,7 @@ trait TestingTools
             return $this->{$name};
         }
 
-        $mock = '\\PayPlugPluginCore\\Tests\\Mock\\' . str_replace('_', '', ucwords($name, '_')) . 'Mock';
+        $mock = '\\PayPlugPluginMcp\\Tests\\Mock\\' . str_replace('_', '', ucwords($name, '_')) . 'Mock';
         if (!class_exists($mock)) {
             throw new \Exception('Mock can\'t be found. Given: ' . $mock);
         }

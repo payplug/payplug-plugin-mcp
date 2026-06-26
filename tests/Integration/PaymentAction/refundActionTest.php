@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Integration\PaymentAction;
+namespace PayPlugPluginMcp\Tests\Integration\PaymentAction;
 
 use Mockery;
 use Mockery\MockInterface;
-use PayPlugPluginCore\Actions\PaymentAction;
-use PayPlugPluginCore\Models\Entities\RefundInputDTO;
-use PayPlugPluginCore\Tests\Mock\RefundInputDTOMock;
-use PayPlugPluginCore\Tests\Mock\RefundOutputDTOMock;
+use PayPlugPluginMcp\Actions\PaymentAction;
+use PayPlugPluginMcp\Models\Entities\RefundInputDTO;
+use PayPlugPluginMcp\Tests\Mock\RefundInputDTOMock;
+use PayPlugPluginMcp\Tests\Mock\RefundOutputDTOMock;
 use PHPUnit\Framework\TestCase;
 
 /**

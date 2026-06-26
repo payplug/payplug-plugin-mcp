@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Traits;
+namespace PayPlugPluginMcp\Tests\Traits;
 
 trait FormatDataProvider
 {

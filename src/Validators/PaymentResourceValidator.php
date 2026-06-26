@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Validators;
+namespace PayPlugPluginMcp\Validators;
 
 use Exception;
 use Payplug\Resource\Payment;
@@ -33,7 +33,7 @@ class PaymentResourceValidator
 
         if (!preg_match(self::ID_PATTERN, $id)) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     'PaymentResourceValidator: id ("%s") must start with "inst_" or "pay_" followed by alphanumeric characters.',
                     $id
                 )

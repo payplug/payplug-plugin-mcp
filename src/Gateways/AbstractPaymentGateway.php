@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Gateways;
+namespace PayPlugPluginMcp\Gateways;
 
-use PayPlugPluginCore\Models\Entities\PaymentInputDTO;
+use PayPlugPluginMcp\Models\Entities\PaymentInputDTO;
 
 abstract class AbstractPaymentGateway
 {
