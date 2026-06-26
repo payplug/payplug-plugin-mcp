@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Mock;
+namespace PayPlugPluginMcp\Tests\Mock;
 
 use Payplug\Resource\Refund;
-use PayPlugPluginCore\Models\Entities\RefundOutputDTO;
+use PayPlugPluginMcp\Models\Entities\RefundOutputDTO;
 
 class RefundOutputDTOMock
 {

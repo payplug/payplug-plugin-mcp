@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Units\Gateways\Payment\StandardPaymentGateway;
+namespace PayPlugPluginMcp\Tests\Units\Gateways\Payment\StandardPaymentGateway;
 
-use PayPlugPluginCore\Tests\Mock\PaymentInputDTOMock;
+use PayPlugPluginMcp\Tests\Mock\PaymentInputDTOMock;
 
 /**
  * @group unit

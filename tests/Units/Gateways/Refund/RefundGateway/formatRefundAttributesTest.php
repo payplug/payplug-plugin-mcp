@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Units\Gateways\Refund\RefundGateway;
+namespace PayPlugPluginMcp\Tests\Units\Gateways\Refund\RefundGateway;
 
-use PayPlugPluginCore\Tests\Mock\RefundInputDTOMock;
+use PayPlugPluginMcp\Tests\Mock\RefundInputDTOMock;
 
 /**
  * @group units

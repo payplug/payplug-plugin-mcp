@@ -1,0 +1,12 @@
+name: Release
+
+'on':
+    push:
+        tags:
+            - '*.*.*'
+            - '!*.*.*-rc*'
+
+jobs:
+    github-release:
+        uses: payplug/template-ci/.github/workflows/github_release.yml@main
+        secrets: inherit

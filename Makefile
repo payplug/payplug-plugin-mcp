@@ -1,9 +1,8 @@
-.PHONY: build up down shell install update test stan lint fix debug release commit-amend commit-push commit-squash
+.PHONY: build up down shell comp-install update test-unit test-unit-inte test-unit-units tu-dep stan cs-lint cs-fix debug ci audit security install
 
 DC = docker compose
 PHP = $(DC) run --rm php
-# Xdebug 2.x step-debug: passes remote_enable + remote_autostart via XDEBUG_CONFIG
-PHP_DEBUG = XDEBUG_CONFIG="remote_enable=1 remote_autostart=1" $(DC) run --rm php
+PHP_DEBUG = XDEBUG_MODE=debug XDEBUG_SESSION=1 $(DC) run --rm php
 
 GIT = git
 
@@ -49,12 +48,7 @@ cs-lint:
 cs-fix:
 	$(PHP) vendor/bin/php-cs-fixer fix
 
-## Release — package src/ + tests/ into payplug-core/
-release:
-	rm -rf payplug-core && mkdir payplug-core && cp -r src payplug-core/ && cp -r tests payplug-core/
-	$(PHP) php scripts/generate-release-composer.php
-
-## Debug (Xdebug 2.x step-debug enabled)
+## Debug (Xdebug 3.x step-debug)
 debug:
 	$(PHP_DEBUG) bash
 
@@ -67,16 +61,3 @@ audit:
 	$(PHP) composer audit
 
 security: audit
-
-# Git
-commit-amend:
-	$(GIT) commit -a --amend --no-edit
-
-commit-push:
-	$(GIT) push --force-with-lease
-
-commit-squash:
-	$(GIT) reset --soft $$(git merge-base origin/develop HEAD)
-	$(GIT) commit --edit -m "$${msg:-$$(git log -1 --pretty=%B)}"
-
-commit-amend-push: commit-amend commit-push

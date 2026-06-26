@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Units\Gateways\Refund\RefundGateway;
+namespace PayPlugPluginMcp\Tests\Units\Gateways\Refund\RefundGateway;
 
 use Mockery;
-use PayPlugPluginCore\Gateways\RefundGateway;
+use PayPlugPluginMcp\Gateways\RefundGateway;
 use PHPUnit\Framework\TestCase;
 
 abstract class refundGatewayBase extends TestCase

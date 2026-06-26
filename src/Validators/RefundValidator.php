@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Validators;
+namespace PayPlugPluginMcp\Validators;
 
 use Exception;
 use Payplug\Resource\Payment;
-use PayPlugPluginCore\Models\Entities\RefundInputDTO;
+use PayPlugPluginMcp\Models\Entities\RefundInputDTO;
 
 class RefundValidator
 {
@@ -42,7 +42,7 @@ class RefundValidator
 
         if ($amount < self::AMOUNT_MIN) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     'RefundValidator: amount (%d) must be at least %d cents.',
                     $amount,
                     self::AMOUNT_MIN
@@ -55,7 +55,7 @@ class RefundValidator
 
             if ($amount > $refundable_limit) {
                 throw new Exception(
-                    sprintf(
+                    \sprintf(
                         'RefundValidator: amount (%d) exceeds the refundable limit (%d cents).',
                         $amount,
                         $refundable_limit
@@ -84,7 +84,7 @@ class RefundValidator
 
         if (null !== $resource->refundable_after && $now < (int) $resource->refundable_after) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     'RefundValidator: refund is not yet available (refundable_after: %s).',
                     date('Y-m-d H:i:s', (int) $resource->refundable_after)
                 )
@@ -93,7 +93,7 @@ class RefundValidator
 
         if (null !== $resource->refundable_until && $now > (int) $resource->refundable_until) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     'RefundValidator: refund period has expired (refundable_until: %s).',
                     date('Y-m-d H:i:s', (int) $resource->refundable_until)
                 )

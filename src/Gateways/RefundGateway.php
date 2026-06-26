@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Gateways;
+namespace PayPlugPluginMcp\Gateways;
 
-use PayPlugPluginCore\Models\Entities\RefundInputDTO;
+use PayPlugPluginMcp\Models\Entities\RefundInputDTO;
 
 class RefundGateway
 {

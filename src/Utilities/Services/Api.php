@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Utilities\Services;
+namespace PayPlugPluginMcp\Utilities\Services;
 
 use Payplug\Payment;
 use Payplug\Payplug;

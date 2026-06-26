@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Units\Actions\PaymentAction;
+namespace PayPlugPluginMcp\Tests\Units\Actions\PaymentAction;
 
 use Mockery\MockInterface;
-use PayPlugPluginCore\Gateways\RefundGateway;
-use PayPlugPluginCore\Models\Entities\RefundInputDTO;
-use PayPlugPluginCore\Tests\Mock\PaymentMock;
-use PayPlugPluginCore\Tests\Mock\RefundInputDTOMock;
-use PayPlugPluginCore\Tests\Mock\RefundOutputDTOMock;
-use PayPlugPluginCore\Utilities\Services\Api;
+use PayPlugPluginMcp\Gateways\RefundGateway;
+use PayPlugPluginMcp\Models\Entities\RefundInputDTO;
+use PayPlugPluginMcp\Tests\Mock\PaymentMock;
+use PayPlugPluginMcp\Tests\Mock\RefundInputDTOMock;
+use PayPlugPluginMcp\Tests\Mock\RefundOutputDTOMock;
+use PayPlugPluginMcp\Utilities\Services\Api;
 
 /**
  * @group units
@@ -26,7 +26,9 @@ class refundActionTest extends paymentActionBase
     /** @var MockInterface */
     private $api_service;
 
-    /** @var array<string, mixed> */
+    /** @var array<string, mixed>
+     *  @phpstan-ignore-next-line
+     */
     private $refund_attributes = [];
 
     public function setUp(): void
