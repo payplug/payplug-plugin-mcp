@@ -1,43 +1,30 @@
 name: CI
 
 on:
-  push:
-    branches-ignore:
-      - main        # main is never pushed to directly; releases are tag-driven
-    tags:
-      - '*'
   pull_request:
     branches:
       - develop
-    types: [opened, synchronize, reopened, closed]
+      - master
+    types: [opened, synchronize, reopened]
 
 jobs:
   # -----------------------------------------------------------------------
-  # 1. QUALITY — static analysis & code style on PHP 8.4 source
-  #    Runs on: push to feature branch  |  PR opened/updated → develop
+  # QUALITY — static analysis, code style & unit tests on PHP 7.4
+  #    Runs on: PR opened/updated → develop or master
   # -----------------------------------------------------------------------
   quality:
     if: github.ref_type != 'tag' && github.event.action != 'closed'
     uses: payplug/template-ci/.github/workflows/php-quality.yml@main
     with:
-      php-version: '7.1'
+      php-version: '7.4'
 
-  # -----------------------------------------------------------------------
-  # 2. PACKAGE — zip and store the artifact on PR merged → develop
-  # -----------------------------------------------------------------------
-  package:
-    if: github.ref_type != 'tag' && github.event.action != 'closed'
-    uses: payplug/template-ci/.github/workflows/php-package.yml@main
+  sonarcloud:
+    if: always() && !failure() && !cancelled() && github.base_ref == 'develop'
+    needs: [ quality ]
+    uses: payplug/template-ci/.github/workflows/sonarcloud.yml@main
     with:
-      php-version: '7.1'
-      zip-prefix: 'payplug-plugin-core-php71'
-
-  # -----------------------------------------------------------------------
-  # 3. RELEASE — create a GitHub Release from a tag on main
-  # -----------------------------------------------------------------------
-  release:
-    if: github.event_name == 'push' && github.ref_type == 'tag'
-    uses: payplug/template-ci/.github/workflows/php-release.yml@main
-    with:
-      php-version: '7.1'
-      zip-prefix: 'payplug-plugin-core-php71'
+      project-name: 'github-payplug-payplug-payplug-plugin-mcp'
+      src-folder: 'src/'
+    secrets:
+      sonar-orga: ${{ secrets.SONAR_ORGA }}
+      sonar-token: ${{ secrets.SONAR_TOKEN }}

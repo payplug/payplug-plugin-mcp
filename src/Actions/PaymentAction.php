@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Actions;
+namespace PayPlugPluginMcp\Actions;
 
-use PayPlugPluginCore\Gateways\PaymentGatewayManager;
-use PayPlugPluginCore\Gateways\RefundGateway;
-use PayPlugPluginCore\Models\Entities\PaymentInputDTO;
-use PayPlugPluginCore\Models\Entities\PaymentOutputDTO;
-use PayPlugPluginCore\Models\Entities\RefundInputDTO;
-use PayPlugPluginCore\Models\Entities\RefundOutputDTO;
-use PayPlugPluginCore\Utilities\Services\Api;
-use PayPlugPluginCore\Validators\PaymentResourceValidator;
-use PayPlugPluginCore\Validators\RefundValidator;
+use Payplug\Resource\Payment;
+use PayPlugPluginMcp\Gateways\PaymentGatewayManager;
+use PayPlugPluginMcp\Gateways\RefundGateway;
+use PayPlugPluginMcp\Models\Entities\PaymentInputDTO;
+use PayPlugPluginMcp\Models\Entities\PaymentOutputDTO;
+use PayPlugPluginMcp\Models\Entities\RefundInputDTO;
+use PayPlugPluginMcp\Models\Entities\RefundOutputDTO;
+use PayPlugPluginMcp\Utilities\Services\Api;
+use PayPlugPluginMcp\Validators\PaymentResourceValidator;
+use PayPlugPluginMcp\Validators\RefundValidator;
 
 class PaymentAction
 {
@@ -67,15 +68,16 @@ class PaymentAction
      */
     public function refundAction(RefundInputDTO $refund_inputDTO): ?RefundOutputDTO
     {
-        if (null === $refund_inputDTO->getResource()) {
-            throw new \Exception('Invalid parameter, resource is required.');
-        }
-
         // Validate the refund input DTO to ensure it contains coherent and allowed data
         (new RefundValidator())->validate($refund_inputDTO);
 
         // Then check if the resource contain in the DTO is a valid payment resource
         $resource = $refund_inputDTO->getResource();
+
+        if (!$resource instanceof Payment) {
+            throw new \Exception('Invalid parameter, resource is required.');
+        }
+
         $validator = new PaymentResourceValidator();
         $validator->validate($resource);
         $validator->validateIsPaid($resource);

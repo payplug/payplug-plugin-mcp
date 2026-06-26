@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Models\Entities;
+namespace PayPlugPluginMcp\Models\Entities;
 
 use Exception;
 use Payplug\Resource\Payment;

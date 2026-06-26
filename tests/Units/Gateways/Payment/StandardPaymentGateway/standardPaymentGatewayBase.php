@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PayPlugPluginCore\Tests\Units\Gateways\Payment\StandardPaymentGateway;
+namespace PayPlugPluginMcp\Tests\Units\Gateways\Payment\StandardPaymentGateway;
 
 use Mockery;
-use PayPlugPluginCore\Gateways\Payment\StandardPaymentGateway;
+use PayPlugPluginMcp\Gateways\Payment\StandardPaymentGateway;
 use PHPUnit\Framework\TestCase;
 
 abstract class standardPaymentGatewayBase extends TestCase
