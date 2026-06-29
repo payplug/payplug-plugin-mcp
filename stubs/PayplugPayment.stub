@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Payplug\Resource;
+
+/**
+ * @property string|null $id
+ * @property bool|null $is_live
+ * @property bool|null $is_paid
+ * @property bool|null $is_refunded
+ * @property int $amount
+ * @property int $amount_refunded
+ * @property string|null $currency
+ * @property int|null $paid_at
+ * @property int|null $refundable_after
+ * @property int|null $refundable_until
+ * @property object|null $failure
+ * @property object|null $card
+ * @property object|null $billing
+ * @property object|null $metadata
+ */
+class Payment
+{
+    /** @var string|null */
+    public $id;
+
+    /** @var bool|null */
+    public $is_live;
+
+    /** @var bool|null */
+    public $is_paid;
+
+    /** @var bool|null */
+    public $is_refunded;
+
+    /** @var int */
+    public $amount;
+
+    /** @var int */
+    public $amount_refunded;
+
+    /** @var string|null */
+    public $currency;
+
+    /** @var int|null */
+    public $paid_at;
+
+    /** @var int|null */
+    public $refundable_after;
+
+    /** @var int|null */
+    public $refundable_until;
+
+    /** @var object|null */
+    public $failure;
+
+    /** @var object|null */
+    public $card;
+
+    /** @var object|null */
+    public $billing;
+
+    /** @var object|null */
+    public $metadata;
+}

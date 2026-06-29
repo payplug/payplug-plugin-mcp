@@ -81,7 +81,7 @@ class PaymentAction
         $validator = new PaymentResourceValidator();
         $validator->validate($resource);
         $validator->validateIsPaid($resource);
-        $resource_id = $resource->id;
+        $resource_id = (string) $resource->id;
 
         // Format the attributes for the refund request
         $refund_gateway = $this->get_refund_gateway();
@@ -92,6 +92,20 @@ class PaymentAction
         $refund = $api->refundPaymentResource($resource_id, $formated_attributes);
 
         return RefundOutputDTO::create($refund);
+    }
+
+    /**
+     * @param string $resource_id
+     * @param string $api_bearer
+     *
+     * @return ?PaymentOutputDTO
+     * @throws \Exception
+     */
+    public function retrieveAction(string $resource_id, string $api_bearer): ?PaymentOutputDTO
+    {
+        $resource = $this->get_api()->load($api_bearer)->retrievePaymentResource($resource_id);
+
+        return PaymentOutputDTO::create($resource);
     }
 
     public function get_payment_gateway(): PaymentGatewayManager

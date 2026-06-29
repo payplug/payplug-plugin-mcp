@@ -7,5 +7,6 @@ parameters:
     paths:
         - src
         - tests
-    ignoreErrors:
-        - '#Access to an undefined property Payplug\\Resource\\Payment::\$#'
+    stubFiles:
+        - stubs/PayplugPayment.stub
+    treatPhpDocTypesAsCertain: false
