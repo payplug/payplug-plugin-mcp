@@ -73,6 +73,34 @@ class Api
         return $response;
     }
 
+    /**
+     * @param string $resource_id
+     * @return array<string, mixed>
+     */
+    public function retrievePaymentResource(string $resource_id): array
+    {
+        try {
+            if (null === $this->payplug_api) {
+                throw new \RuntimeException('API Payplug must be initialized.');
+            }
+            $response = [
+                'code'     => 200,
+                'message'  => 'OK',
+                'resource' => Payment::retrieve($resource_id, $this->payplug_api),
+                'result'   => true,
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'code'     => $e->getCode(),
+                'message'  => $e->getMessage(),
+                'resource' => null,
+                'result'   => false,
+            ];
+        }
+
+        return $response;
+    }
+
     public function getBearerToken(): string
     {
         return $this->bearer_token;
